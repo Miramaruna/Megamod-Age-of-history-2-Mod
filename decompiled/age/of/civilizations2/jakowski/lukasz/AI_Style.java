@@ -181,7 +181,12 @@ public class AI_Style {
             }
          }
 
-         if (CFG.game.getCiv(nCivID).getMovePoints() >= 9 && CFG.game.getCiv(nCivID).getMoney() > 0L) {
+         boolean tForceAssistBuild = AI_Assistant.ENABLED
+            && nCivID == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()
+            && (CFG.game_NextTurnUpdate.getInflationPerc(nCivID) > 0F
+               || CFG.game.getCiv(nCivID).getMoney() > 10000L);
+
+         if ((CFG.game.getCiv(nCivID).getMovePoints() >= 9 || tForceAssistBuild) && CFG.game.getCiv(nCivID).getMoney() > 0L) {
             this.buildBuildings(nCivID);
          }
 
@@ -6804,6 +6809,10 @@ public class AI_Style {
    }
 
    public long build_GetMoney(int nCivID) {
+      if (AI_Assistant.ENABLED && nCivID == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()) {
+         return CFG.game.getCiv(nCivID).getMoney();
+      }
+
       return CFG.game.getCiv(nCivID).getMoney() < getMoney_MinReserve(nCivID) ? 0L : CFG.game.getCiv(nCivID).getMoney() - getMoney_MinReserve(nCivID);
    }
 
@@ -6839,7 +6848,9 @@ public class AI_Style {
          && (float)CFG.game.getCiv(nCivID).getMoney() >= tInflationThreshold * 0.3F;
       int tMaxBuilds = tPreInflationLightBuild ? 3 : (tIsPlayerWithAssistant && tInflationActive ? 5 : 1);
 
-      if (this.build_GetMoney(nCivID) > 0L) {
+      boolean tBypassMoneyGate = tIsPlayerWithAssistant && (tInflationActive || tPreInflationLightBuild);
+
+      if (tBypassMoneyGate || this.build_GetMoney(nCivID) > 0L) {
          for (int tB = 0; tB < tMaxBuilds; tB++) {
          List<AI_Build> buildingsScore = new ArrayList<>();
          List<AI_Build_Option> buildingsOptions = new ArrayList<>();

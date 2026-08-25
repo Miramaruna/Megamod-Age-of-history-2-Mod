@@ -1,12 +1,17 @@
 package age.of.civilizations2.jakowski.lukasz;
 
+import com.badlogic.gdx.Gdx;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class WorldNews {
    public static boolean PENDING = false;
    public static int FRESH_WARS_COUNT = 0;
+   public static ArrayList<String> CAPITULATIONS = new ArrayList<>();
+   static HashSet<Integer> lastAliveCivs = new HashSet<>();
    public static ArrayList<String> LINES = new ArrayList<>();
    public static String HEADER = "Газета";
    public static String DATELINE = "";
@@ -54,7 +59,7 @@ public class WorldNews {
                if (!ANNOUNCED_WARS.contains(tKey)) {
                   String tAgg = CFG.game.getCiv(tWar.getAggressorID(0).getCivID()).getCivName();
                   String tDef = CFG.game.getCiv(tWar.getDefenderID(0).getCivID()).getCivName();
-                  LINES.add("⚔ ВОЙНА: " + tAgg + " ➤ " + tDef);
+                  LINES.add("ВОЙНА: " + tAgg + " > " + tDef);
                   ANNOUNCED_WARS.add(tKey);
                   tFreshWars++;
                   if (LINES.size() >= 7) break;
@@ -119,6 +124,56 @@ public class WorldNews {
          if (!tImgs.isEmpty()) {
             PIC_NAME = tImgs.get(CFG.oR.nextInt(tImgs.size()));
          }
+      } catch (Exception ignored) {
+      }
+   }
+
+   public static void saveCivSnapshot() {
+      lastAliveCivs.clear();
+
+      for (int i = 1; i < CFG.game.getCivsSize(); i++) {
+         if (CFG.game.getCiv(i).getNumOfProvinces() > 0) {
+            lastAliveCivs.add(i);
+         }
+      }
+   }
+
+   public static void checkCapitulations() {
+      try {
+         for (Integer tWasAlive : lastAliveCivs) {
+            int tProvs = CFG.game.getCiv(tWasAlive).getNumOfProvinces();
+            if (tProvs == 0) {
+               String tName = CFG.game.getCiv(tWasAlive).getCivName();
+               String tLine = "\u2620 \u041a\u0410\u041f\u0418\u0422\u0423\u041b\u042f\u0426\u0418\u042f: " + tName;
+               
+               String tConq = "";
+               int tBestN = 0;
+               for (int p = 0; p < CFG.game.getProvincesSize(); p++) {
+                  Province tProv = CFG.game.getProvince(p);
+                  if (tProv.getTrueOwnerOfProvince() == tWasAlive && tProv.getCivID() > 0) {
+                     String tOwner = CFG.game.getCiv(tProv.getCivID()).getCivName();
+                     break;
+                  }
+               }
+               
+               for (int p = 0; p < CFG.game.getProvincesSize(); p++) {
+                  Province tp = CFG.game.getProvince(p);
+
+               }
+               
+               CAPITULATIONS.add(tLine);
+               Gdx.app.log("AoC", "CAPITULATION: " + tName);
+            }
+         }
+
+         java.util.Iterator<Integer> it = lastAliveCivs.iterator();
+         HashSet<Integer> stillAlive = new HashSet<>();
+         for (int c = 1; c < CFG.game.getCivsSize(); c++) {
+            if (CFG.game.getCiv(c).getNumOfProvinces() > 0) {
+               stillAlive.add(c);
+            }
+         }
+         lastAliveCivs = stillAlive;
       } catch (Exception ignored) {
       }
    }

@@ -20,6 +20,10 @@ public class AI_Build {
    }
 
    public long getMoney(int nCivID) {
+      if (AI_Assistant.ENABLED && nCivID == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()) {
+         return CFG.game.getCiv(nCivID).getMoney();
+      }
+
       return CFG.game.getCiv(nCivID).getMoney() < AI_Style.getMoney_MinReserve(nCivID)
          ? 0L
          : CFG.game.getCiv(nCivID).getMoney() - AI_Style.getMoney_MinReserve(nCivID);
