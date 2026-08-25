@@ -6924,18 +6924,22 @@ public class AI_Style {
             }
 
             if (buildingsOptions.size() > 0) {
-               int tBestScore = 0;
+               buildingsOptions.sort((a, b) -> Float.compare(b.getScore(nCivID), a.getScore(nCivID)));
 
-               for (int i = tBestScore + 1; i < buildingsOptions.size(); i++) {
-                  if (buildingsOptions.get(i).getScore(nCivID) > buildingsOptions.get(tBestScore).getScore(nCivID)) {
-                     tBestScore = i;
+               for (AI_Build_Option tOpt : buildingsOptions) {
+                  if (tOpt instanceof AI_Build_Option_Port) continue;
+
+                  AI_Build tBuild = tOpt.getData(nCivID);
+
+                  if (tBuild.build(nCivID, 0, false)) {
+                     CFG.game.getCiv(nCivID).buildCivPersonality_Buildings();
+                     break;
                   }
                }
 
-               buildingsScore.add(buildingsOptions.get(tBestScore).getData(nCivID));
-               if (buildingsScore.get(0).build(nCivID, 0, false)) {
-                  CFG.game.getCiv(nCivID).buildCivPersonality_Buildings();
-               }
+               AI_Build_Option_Port tPortOpt = new AI_Build_Option_Port();
+               AI_Build tPortBuild = tPortOpt.getData(nCivID);
+               tPortBuild.build(nCivID, 0, false);
             }
          } catch (IndexOutOfBoundsException var6) {
             CFG.exceptionStack(var6);

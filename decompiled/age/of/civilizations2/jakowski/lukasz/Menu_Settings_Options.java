@@ -434,6 +434,17 @@ public class Menu_Settings_Options extends SliderMenu {
             }
          }
       );
+      menuElements.add(
+         new Button_Menu(
+            null,
+            (int)(50.0F * CFG.GUI_SCALE),
+            0,
+            tY = tY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING,
+            CFG.GAME_WIDTH,
+            CFG.BUTTON_HEIGHT,
+            true
+         )
+      );
       this.initMenu(
          null, 0, CFG.BUTTON_HEIGHT * 3 / 4, CFG.GAME_WIDTH, CFG.GAME_HEIGHT - CFG.BUTTON_HEIGHT * 3 / 4 - CFG.BUTTON_HEIGHT - CFG.PADDING, menuElements
       );
@@ -465,6 +476,7 @@ public class Menu_Settings_Options extends SliderMenu {
       this.getMenuElement(24).setText(CFG.langManager.get("CustomCursor"));
       this.getMenuElement(25).setText(CFG.langManager.get("Defaults"));
       this.getMenuElement(26).setText(CFG.langManager.get("FPSCounter"));
+      this.getMenuElement(27).setText(CFG.langManager.get("VoiceLanguage") + ": " + VoiceManager.LANGUAGE);
    }
 
    @Override
@@ -491,6 +503,11 @@ public class Menu_Settings_Options extends SliderMenu {
    @Override
    public final void actionElement(int iID) {
       switch (iID) {
+         case 27:
+            VoiceManager.nextLanguage();
+            this.updateLanguage();
+            VoiceManager.playSelect();
+            return;
          case 0:
             CFG.backToMenu = Menu.eSETTINGS;
             CFG.menuManager.setViewID(Menu.eSELECT_MAP_TYPE);

@@ -11469,7 +11469,7 @@ public class MenuManager {
    }
 
    public final boolean getVisibleInGame_Event() {
-      return this.menus.get(this.INGAME).get(this.INGAME_EVENT).getVisible();
+      return this.INGAME_EVENT >= 0 && this.menus.get(this.INGAME).get(this.INGAME_EVENT).getVisible();
    }
 
    public final boolean getVisibleInGame_SendMessage() {
@@ -12270,6 +12270,10 @@ public class MenuManager {
    }
 
    public final void rebuildInGame_Event() {
+      if (this.INGAME_EVENT < 0) {
+         return;
+      }
+
       this.menus.get(this.INGAME).get(this.INGAME_EVENT).setVisible(false);
       int tPosX = this.menus.get(this.INGAME).get(this.INGAME_EVENT).getPosX();
       int tPosY = this.menus.get(this.INGAME).get(this.INGAME_EVENT).getPosY();

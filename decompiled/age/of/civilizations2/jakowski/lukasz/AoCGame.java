@@ -365,21 +365,22 @@ public class AoCGame extends ApplicationAdapter implements InputProcessor {
    public void render() {
       this.renderStart = System.currentTimeMillis();
 
-      if (WorldNews.PENDING
-         && !CFG.SPECTATOR_MODE
-         && CFG.menuManager.getInGameView()
-         && CFG.gameAction.getActiveTurnState() == Game_Action.TurnStates.INPUT_ORDERS
-         && !CFG.menuManager.getInGameView_Options()) {
+            if (WorldNews.PENDING && !CFG.SPECTATOR_MODE && CFG.menuManager.getInGameView() && CFG.menuManager.INGAME_EVENT >= 0) {
          WorldNews.PENDING = false;
 
-         try {
-            int tNewsEvID = WorldNews.registerRuntimeEvent(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID());
-            Menu_InGame_Event.EVENT_ID = tNewsEvID;
-            CFG.menuManager.rebuildInGame_Event();
-            Gdx.app.log("AoC", "WORLDNEWS: shown as event #" + tNewsEvID);
-         } catch (Exception varWN) {
-            CFG.exceptionStack(varWN);
+         if (WorldNews.hasNews()) {
+            try {
+               int tEvID = WorldNews.registerRuntimeEvent(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID());
+               Menu_InGame_Event.EVENT_ID = tEvID;
+               CFG.menuManager.rebuildInGame_Event();
+               Gdx.app.log("AoC", "WORLDNEWS: shown as event");
+            } catch (Exception varWN) {
+               CFG.exceptionStack(varWN);
+            }
          }
+
+         WorldNews.CAPITULATIONS.clear();
+         WorldNews.FRESH_WARS_COUNT = 0;
       }
 
       try {

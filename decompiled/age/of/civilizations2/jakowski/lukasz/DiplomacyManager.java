@@ -3183,6 +3183,7 @@ public class DiplomacyManager {
                CFG.game.buildCivilizationRegions(CFG.game.lPeaceTreaties.get(peaceID).peaceTreaty_GameData.lCivsData_Aggressors.get(var52).iCivID);
             }
 
+
             try {
                for (int var53 = 0; var53 < CFG.game.lPeaceTreaties.get(peaceID).peaceTreaty_GameData.lCivsData_Defenders.size(); var53++) {
                   if (CFG.game.getCiv(CFG.game.lPeaceTreaties.get(peaceID).peaceTreaty_GameData.lCivsData_Defenders.get(var53).iCivID).getNumOfProvinces() == 0

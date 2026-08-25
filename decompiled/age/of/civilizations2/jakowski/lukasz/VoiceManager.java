@@ -2,70 +2,142 @@ package age.of.civilizations2.jakowski.lukasz;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class VoiceManager {
    private static HashMap<String, Sound> tCache = new HashMap<>();
    private static long tLastPlay = 0L;
-
-   private static final int[] SELECT = new int[]{
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-      21, 22, 23, 24, 25, 26, 27, 28
+   private static HashMap<String, ArrayList<String>> tFiles = new HashMap<>();
+   private static String tScannedLang = null;
+   public static String LANGUAGE = "english";
+   public static HashSet<String> AVAILABLE = new HashSet<>();
+   public static final String[] LANG_ORDER = {
+      "english", "russian", "german", "french", "spanish", "italian",
+      "polish", "dutch", "japanese", "chinese", "danish", "norwegian", "swedish"
    };
-   private static final int[] ATTACK = new int[]{34, 35, 36, 37, 38, 39, 44, 48, 49, 50};
-   private static final int[] MOVE = new int[]{
-      41, 42, 43, 58, 59, 60, 61, 62, 63, 64, 65, 67, 68, 69, 70, 71
-   };
-   private static final int[] CANCEL = new int[]{75, 77};
 
-   public static final void playSelect() {
-      Gdx.app.log("AoC", "VO: playSelect called");
-      playRandom(SELECT);
-   }
-
-   public static final void playAttack() {
-      Gdx.app.log("AoC", "VO: playAttack called");
-      playRandom(ATTACK);
-   }
-
-   public static final void playMove() {
-      Gdx.app.log("AoC", "VO: playMove called");
-      playRandom(MOVE);
-   }
-
-   public static final void playCancel() {
-      playRandom(CANCEL);
-   }
-
-   private static void playRandom(int[] nums) {
-      long tNow = System.currentTimeMillis();
-      if (tNow - tLastPlay < 400L && tLastPlay > 0) {
-         return;
+   private static void scan() {
+      if (tScannedLang != null && tScannedLang.equals(LANGUAGE)) return;
+      if (AVAILABLE.isEmpty()) {
+         FileHandle root = Gdx.files.local("sounds/vo");
+         if (root.exists()) {
+            for (FileHandle d : root.list()) {
+               if (d.isDirectory()) AVAILABLE.add(d.name());
+            }
+         }
+         if (!AVAILABLE.contains("english")) AVAILABLE.add("english");
+         if (!AVAILABLE.contains(LANGUAGE)) LANGUAGE = AVAILABLE.iterator().next();
       }
+
+      tSelectReset();
+      FileHandle dir = Gdx.files.local("sounds/vo/" + LANGUAGE);
+
+      if (!dir.exists()) return;
+
+      for (FileHandle f : dir.list()) {
+         String n = f.name();
+
+         if (!n.endsWith(".ogg")) continue;
+
+         if (n.startsWith("select_")) {
+            getList("select").add(n);
+         } else if (n.startsWith("attack_")) {
+            getList("attack").add(n);
+         } else if (n.startsWith("move_")) {
+            getList("move").add(n);
+         } else if (n.startsWith("cancel_")) {
+            getList("cancel").add(n);
+         } else if (n.startsWith("retreat_")) {
+            getList("retreat").add(n);
+         }
+      }
+
+      tScannedLang = LANGUAGE;
+      Gdx.app.log("AoC", "VO SCAN [" + LANGUAGE + "]: select=" + size("select")
+         + " attack=" + size("attack")
+         + " move=" + size("move")
+         + " cancel=" + size("cancel")
+         + " retreat=" + size("retreat"));
+   }
+
+   private static void tSelectReset() {
+      tFiles.clear();
+      tCache.clear();
+   }
+
+   private static ArrayList<String> getList(String cat) {
+      ArrayList<String> l = tFiles.get(cat);
+
+      if (l == null) {
+         l = new ArrayList<>();
+         tFiles.put(cat, l);
+      }
+
+      return l;
+   }
+
+   private static int size(String cat) {
+      ArrayList<String> l = tFiles.get(cat);
+      return l == null ? 0 : l.size();
+   }
+
+   public static void playSelect() { scan(); playRandom("select"); }
+   public static void playAttack() { scan(); playRandom("attack"); }
+   public static void playMove() { scan(); playRandom("move"); }
+   public static void playCancel() { scan(); playRandom("cancel"); }
+   public static void playRetreat() { scan(); playRandom("retreat"); }
+
+   public static void nextLanguage() {
+      if (AVAILABLE.isEmpty()) {
+         FileHandle root = Gdx.files.local("sounds/vo");
+
+         if (root.exists()) {
+            for (FileHandle d : root.list()) {
+               if (d.isDirectory()) AVAILABLE.add(d.name());
+            }
+         }
+      }
+
+      if (!AVAILABLE.contains(LANGUAGE)) LANGUAGE = "english";
+
+      ArrayList<String> langs = new ArrayList<>(AVAILABLE);
+      java.util.Collections.sort(langs);
+
+      if (langs.isEmpty()) return;
+
+      int i = langs.indexOf(LANGUAGE);
+      LANGUAGE = langs.get(i < 0 ? 0 : (i + 1) % langs.size());
+      tScannedLang = null;
+      scan();
+   }
+
+   private static void playRandom(String cat) {
+      ArrayList<String> files = tFiles.get(cat);
+
+      if (files == null || files.isEmpty()) return;
+
+      long tNow = System.currentTimeMillis();
+
+      if (tNow - tLastPlay < 400L && tLastPlay > 0) return;
 
       tLastPlay = tNow;
 
       try {
-         int tNum = nums[CFG.oR.nextInt(nums.length)];
-         String tKey = "vo_" + tNum;
-         Sound tSnd = tCache.get(tKey);
+         String tFile = files.get(CFG.oR.nextInt(files.size()));
+         Sound tSnd = tCache.get(tFile);
 
          if (tSnd == null) {
-            String tName = "sounds/vo/SovietExtracted_" + String.format("%03d", tNum) + ".mp3";
-            com.badlogic.gdx.files.FileHandle tFH = Gdx.files.internal(tName);
-            Gdx.app.log("AoC", "VO: loading " + tName + " exists=" + tFH.exists());
-            tSnd = Gdx.audio.newSound(tFH);
-            tCache.put(tKey, tSnd);
-            Gdx.app.log("AoC", "VO: loaded OK");
+            tSnd = Gdx.audio.newSound(Gdx.files.local("sounds/vo/" + LANGUAGE + "/" + tFile));
+            tCache.put(tFile, tSnd);
          }
 
          float tVol = CFG.soundsManager.getSoundsVolume() * CFG.soundsManager.getMasterVolume();
-         Gdx.app.log("AoC", "VO PLAY: num=" + tNum + " vol=" + tVol);
          tSnd.play(tVol);
       } catch (Exception var5) {
-         Gdx.app.log("AoC", "VO ERROR: " + var5);
-         var5.printStackTrace();
+         Gdx.app.log("AoC", "VO ERROR: " + var5.getMessage());
       }
    }
 }

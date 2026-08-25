@@ -4563,6 +4563,11 @@ public class Game_Action {
    }
 
    public void retreate(int n) {
+      try {
+         VoiceManager.playRetreat();
+      } catch (Exception ignored) {
+      }
+
       ArrayList<Integer> lProvincesToRetreat = new ArrayList<>();
 
       for (int j = 0; j < CFG.game.getProvince(this.currentMoveUnits.getMoveUnits(0).getToProvinceID()).getNeighboringProvincesSize(); j++) {

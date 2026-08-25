@@ -23,14 +23,15 @@ public class Turn_NewTurn extends Thread {
    @Override
    public void run() {
       Gdx.app.log("Turn_NewTurn", "Turn_NewTurn...");
-      WorldNews.saveCivSnapshot();
       doAction();
-      WorldNews.checkCapitulations();
 
-      if (!WorldNews.CAPITULATIONS.isEmpty() && !CFG.SPECTATOR_MODE) {
+      if (!CFG.SPECTATOR_MODE && CFG.game.getPlayersSize() > 0) {
          WorldNews.prepare();
-         WorldNews.PENDING = true;
-         Gdx.app.log("AoC", "WORLDNEWS: capitulations detected");
+
+         if (WorldNews.hasNews()) {
+            WorldNews.PENDING = true;
+            Gdx.app.log("AoC", "WORLDNEWS: pending");
+         }
       }
       Gdx.app.log("Turn_NewTurn", "Turn_NewTurn END");
    }
@@ -720,12 +721,6 @@ Gdx.app.log("AoC", "ERR: 0000, fontMain" + CFG.fontMain.getData().scaleY);
 
          if (!CFG.SPECTATOR_MODE && CFG.game.getPlayersSize() > 0) {
             WorldNews.prepare();
-            boolean tHasNews = WorldNews.FRESH_WARS_COUNT > 0 || !WorldNews.CAPITULATIONS.isEmpty();
-            
-            if (tHasNews) {
-               WorldNews.PENDING = true;
-               Gdx.app.log("AoC", "WORLDNEWS: pending, wars=" + WorldNews.FRESH_WARS_COUNT);
-            }
          }
          Game_Calendar.TURNS_SINCE_LAST_WAR++;
          CFG.gameAction.buildRank_Score();
