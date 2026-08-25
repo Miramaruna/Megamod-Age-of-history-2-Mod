@@ -1,0 +1,40 @@
+package com.badlogic.gdx.net;
+
+public interface HttpResponseHeader {
+   String AccessControlAllowOrigin = "Access-Control-Allow-Origin";
+   String AcceptRanges = "Accept-Ranges";
+   String Age = "Age";
+   String Allow = "Allow";
+   String CacheControl = "Cache-Control";
+   String Connection = "Connection";
+   String ContentEncoding = "Content-Encoding";
+   String ContentLanguage = "Content-Language";
+   String ContentLength = "Content-Length";
+   String ContentLocation = "Content-Location";
+   String ContentMD5 = "Content-MD5";
+   String ContentDisposition = "Content-Disposition";
+   String ContentRange = "Content-Range";
+   String ContentType = "Content-Type";
+   String Date = "Date";
+   String ETag = "ETag";
+   String Expires = "Expires";
+   String LastModified = "Last-Modified";
+   String Link = "Link";
+   String Location = "Location";
+   String P3P = "P3P";
+   String Pragma = "Pragma";
+   String ProxyAuthenticate = "Proxy-Authenticate";
+   String Refresh = "Refresh";
+   String RetryAfter = "Retry-After";
+   String Server = "Server";
+   String SetCookie = "Set-Cookie";
+   String Status = "Status";
+   String StrictTransportSecurity = "Strict-Transport-Security";
+   String Trailer = "Trailer";
+   String TransferEncoding = "Transfer-Encoding";
+   String Upgrade = "Upgrade";
+   String Vary = "Vary";
+   String Via = "Via";
+   String Warning = "Warning";
+   String WWWAuthenticate = "WWW-Authenticate";
+}

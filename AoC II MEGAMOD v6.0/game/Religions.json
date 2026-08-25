@@ -1,0 +1,44 @@
+{
+	Religion: [
+		{
+			Name: "Provoslavia",
+			Extra_Tag: "g",
+			GOV_GROUP_ID: 2,
+			
+			ACCEPTABLE_TAXATION: 0.95,
+			MIN_GOODS: 0.02,
+			MIN_INVESTMENTS: 0.17,
+			RESEARCH_COST: 2.0,
+			INCOME_TAXATION: 1.32,
+			INCOME_PRODUCTION: 0.57,
+			
+			MILITARY_UPKEEP: 0.68,
+			ADMINISTRATION_COST: 1.45,
+			ADMINISTRATION_COST_DISTANCE: 1.98,
+			ADMINISTRATION_COST_CAPITAL: 0.85,
+			
+			COST_OF_MOVE: 5,
+			COST_OF_MOVE_TO_THE_SAME_PROV: 6,
+			COST_OF_MOVE_OWN_PROV: 2,
+			COST_OF_RECRUIT: 13,
+			COST_OF_DISBAND: 20,
+			COST_OF_PLUNDER: 1,
+			
+			DEFENSE_BONUS: 9,
+			
+			CAN_BECOME_CIVILIZED: -1,
+			CIVILIZE_TECH_LEVEL: 2.0f,
+			AVAILABLE_SINCE_AGE_ID: 7,
+			
+			REVOLUTIONARY: false,
+			
+			AI_TYPE: "FASCISM",
+			
+			R: 45,
+			G: 42,
+			B: 12
+		},
+	],
+	
+	Age_of_Civilizations: Religions
+}

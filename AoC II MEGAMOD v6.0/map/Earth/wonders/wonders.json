@@ -1,0 +1,475 @@
+{
+	wonders:
+	[
+		{
+			Name: "Stonehenge",
+			x: 2060,
+			y: 889,
+			SinceYear: -3100,
+			UntilYear: 100000,
+			Image: "stonehenge.png",
+			Wiki: ""
+		},
+		{
+			Name: "Pyramids",
+			x: 2463,
+			y: 1233,
+			SinceYear: -2630,
+			UntilYear: 100000,
+			Image: "piramid.png",
+			Wiki: ""
+		},
+		{
+			Name: "Parthenon",
+			x: 2379,
+			y: 1111,
+			SinceYear: -447,
+			UntilYear: 100000,
+			Image: "Parthenon.png",
+			Wiki: ""
+		},
+		{
+			Name: "Colossus of Rhodes",
+			x: 2430,
+			y: 1135,
+			SinceYear: -305,
+			UntilYear: 100000,
+			Image: "Colossus.png",
+			Wiki: ""
+		},
+		{
+			Name: "Colosseum",
+			x: 2240,
+			y: 1046,
+			SinceYear: 80,
+			UntilYear: 100000,
+			Image: "Colosseum.png",
+			Wiki: ""
+		},
+		{
+			Name: "Pharos of Alexandria",
+			x: 2453,
+			y: 1217,
+			SinceYear: 284,
+			UntilYear: 100000,
+			Image: "pharos.png",
+			Wiki: ""
+		},
+		{
+			Name: "Chichen Itza",
+			x: 999,
+			y: 1369,
+			SinceYear: 600,
+			UntilYear: 100000,
+			Image: "itza.png",
+			Wiki: ""
+		},
+		{
+			Name: "Angkor Wat",
+			x: 3357,
+			y: 1463,
+			SinceYear: 1100,
+			UntilYear: 100000,
+			Image: "wat.png",
+			Wiki: ""
+		},
+		{
+			Name: "Great Mosque of Djenne",
+			x: 2028,
+			y: 1456,
+			SinceYear: 1200,
+			UntilYear: 100000,
+			Image: "Great_Mosque.png",
+			Wiki: ""
+		},
+		{
+			Name: "Moai",
+			x: 726,
+			y: 2011,
+			SinceYear: 1250,
+			UntilYear: 100000,
+			Image: "moai.png",
+			Wiki: ""
+		},
+		{
+			Name: "Himeji Castle",
+			x: 3735,
+			y: 1162,
+			SinceYear: 1300,
+			UntilYear: 100000,
+			Image: "Himeji.png",
+			Wiki: ""
+		},
+		{
+			Name: "Taj Mahal",
+			x: 3042,
+			y: 1274,
+			SinceYear: 1632,
+			UntilYear: 100000,
+			Image: "taj_mahal.png",
+			Wiki: ""
+		},
+		{
+			Name: "Brandenburg Gate",
+			x: 2250,
+			y: 864,
+			SinceYear: 1791,
+			UntilYear: 100000,
+			Image: "Brandenburg.png",
+			Wiki: ""
+		},
+		{
+			Name: "White House",
+			x: 1139,
+			y: 1107
+			SinceYear: 1800,
+			UntilYear: 100000,
+			Image: "House.png",
+			Wiki: ""
+		},
+		{
+			Name: "Big Ben",
+			x: 2088,
+			y: 880
+			SinceYear: 1859,
+			UntilYear: 100000,
+			Image: "Big_Ben.png",
+			Wiki: ""
+		},
+		{
+			Name: "Christ the Redeemer",
+			x: 1546,
+			y: 1954,
+			SinceYear: 1931,
+			UntilYear: 100000,
+			Image: "redeemer.png",
+			Wiki: ""
+		},
+		{
+			Name: "Eiffel Tower",
+			x: 2116,
+			y: 933,
+			SinceYear: 1889,
+			UntilYear: 100000,
+			Image: "eiffelt.png",
+			Wiki: ""
+		},
+		{
+			Name: "Moscow Kremlin",
+			x: 2546,
+			y: 806
+			SinceYear: 1947,
+			UntilYear: 100000,
+			Image: "Kreml.png",
+			Wiki: ""
+		},
+		{
+			Name: "Mosque Kaaba",
+			x: 2578,
+			y: 1358
+			SinceYear: 650,
+			UntilYear: 100000,
+			Image: "kaaba.png",
+			Wiki: ""
+		},
+		{
+			Name: "Hagia Sophia",
+			x: 2439,
+			y: 1060
+			SinceYear: 360,
+			UntilYear: 100000,
+			Image: "sophia.png",
+			Wiki: ""
+		},
+		{
+			Name: "Church of the Holy Sepulchre",
+			x: 2514,
+			y: 1205
+			SinceYear: 335,
+			UntilYear: 100000,
+			Image: "christ.png",
+			Wiki: ""
+		},
+		{
+			Name: "Statue of Liberty",
+			x: 1176,
+			y: 1076
+			SinceYear: 1886,
+			UntilYear: 100000,
+			Image: "svoboda.png",
+			Wiki: ""
+		},
+		{
+			Name: "Cologne Cathedral",
+			x: 2170,
+			y: 892
+			SinceYear: 1248,
+			UntilYear: 100000,
+			Image: "koln.png",
+			Wiki: ""
+		},
+		{
+			Name: "Pisan Tower",
+			x: 2219,
+			y: 1024
+			SinceYear: 1173,
+			UntilYear: 100000,
+			Image: "pisa.png",
+			Wiki: ""
+		},
+		{
+			Name: "Amien Cathedral",
+			x: 2113,
+			y: 910
+			SinceYear: 1220,
+			UntilYear: 100000,
+			Image: "amien.png",
+			Wiki: ""
+		},
+		{
+			Name: "Palace of Versailles",
+			x: 2107,
+			y: 933
+			SinceYear: 1661,
+			UntilYear: 100000,
+			Image: "versal.png",
+			Wiki: ""
+		},
+		{
+			Name: "Kyiv Pechersk Lavra",
+			x: 2457,
+			y: 900
+			SinceYear: 1051,
+			UntilYear: 100000,
+			Image: "kiev.png",
+			Wiki: ""
+		},
+		{
+			Name: "Reichstag",
+			x: 2247,
+			y: 863
+			SinceYear: 1884,
+			UntilYear: 100000,
+			Image: "reichstag.png",
+			Wiki: ""
+		},
+		{
+			Name: "Winter Palace",
+			x: 2458,
+			y: 712
+			SinceYear: 1754,
+			UntilYear: 100000,
+			Image: "peterburg.png",
+			Wiki: ""
+		},
+		{
+			Name: "Forbidden City",
+			x: 3509,
+			y: 1080
+			SinceYear: 1420,
+			UntilYear: 100000,
+			Image: "beijing.png",
+			Wiki: ""
+		},
+		{
+			Name: "Royal Palace of Brussels",
+			x: 2137,
+			y: 896
+			SinceYear: 1783,
+			UntilYear: 100000,
+			Image: "brussels.png",
+			Wiki: ""
+		},
+		{
+			Name: "Cathedral of Our Lady",
+			x: 2146,
+			y: 890
+			SinceYear: 1352,
+			UntilYear: 100000,
+			Image: "antverpen.png",
+			Wiki: ""
+		},
+		{
+			Name: "Mir Castle",
+			x: 2413,
+			y: 848
+			SinceYear: 1520,
+			UntilYear: 100000,
+			Image: "mirsky.png",
+			Wiki: ""
+		},
+		{
+			Name: "Royal Palace of Amsterdam",
+			x: 2147,
+			y: 863
+			SinceYear: 1648,
+			UntilYear: 100000,
+			Image: "amsterdam.png",
+			Wiki: ""
+		},
+		{
+			Name: "Neuschwanstein Castle",
+			x: 2221,
+			y: 956
+			SinceYear: 1886,
+			UntilYear: 100000,
+			Image: "neuschwanstein.png",
+			Wiki: ""
+		},
+		{
+			Name: "Sagrada Família",
+			x: 2111,
+			y: 1053
+			SinceYear: 1882,
+			UntilYear: 100000,
+			Image: "sagrada.png",
+			Wiki: ""
+		},
+		{
+			Name: "Hungarian Parliament",
+			x: 2320,
+			y: 959
+			SinceYear: 1904,
+			UntilYear: 100000,
+			Image: "budapest.png",
+			Wiki: ""
+		},
+		{
+			Name: "Edinburgh Castle",
+			x: 2057,
+			y: 798
+			SinceYear: 1139,
+			UntilYear: 100000,
+			Image: "edinburg.png",
+			Wiki: ""
+		},
+		{
+			Name: "Mont-Saint-Michel",
+			x: 2069,
+			y: 934
+			SinceYear: 709,
+			UntilYear: 100000,
+			Image: "monsen.png",
+			Wiki: ""
+		},
+		{
+			Name: "St. Stephen's Cathedral",
+			x: 2282,
+			y: 946
+			SinceYear: 1137,
+			UntilYear: 100000,
+			Image: "vienna.png",
+			Wiki: ""
+		},
+		{
+			Name: "Königsberg Cathedral",
+			x: 2340,
+			y: 821
+			SinceYear: 1333,
+			UntilYear: 100000,
+			Image: "konigsberg.png",
+			Wiki: ""
+		},
+		{
+			Name: "Wilanów Palace",
+			x: 2343,
+			y: 876
+			SinceYear: 1677,
+			UntilYear: 100000,
+			Image: "warsaw.png",
+			Wiki: ""
+		},
+		{
+			Name: "Valley of Jugs",
+			x: 3361,
+			y: 1370
+			SinceYear: -1,
+			UntilYear: 100000,
+			Image: "valleyj.png",
+			Wiki: ""
+		},
+		{
+			Name: "Ponagar",
+			x: 3423,
+			y: 1484
+			SinceYear: 960,
+			UntilYear: 100000,
+			Image: "ponagar.png",
+			Wiki: ""
+		},
+		{
+			Name: "Shaolin",
+			x: 3478,
+			y: 1164
+			SinceYear: 495,
+			UntilYear: 100000,
+			Image: "shaolin.png",
+			Wiki: ""
+		},
+		{
+			Name: "Hwaseong Fortress",
+			x: 3643,
+			y: 1127
+			SinceYear: 1794,
+			UntilYear: 100000,
+			Image: "hvason.png",
+			Wiki: ""
+		},
+		{
+			Name: "Lal-Qila",
+			x: 3030,
+			y: 1253
+			SinceYear: 1648,
+			UntilYear: 100000,
+			Image: "lalkila.png",
+			Wiki: ""
+		},
+		{
+			Name: "Chaittiyo Pagoda",
+			x: 3279,
+			y: 1411
+			SinceYear: -489,
+			UntilYear: 100000,
+			Image: "goldrock.png",
+			Wiki: ""
+		},
+		{
+			Name: "Golden Pavilion",
+			x: 3750,
+			y: 1155
+			SinceYear: 1397,
+			UntilYear: 100000,
+			Image: "goldpov.png",
+			Wiki: ""
+		},
+		{
+			Name: "Ayutthaya",
+			x: 3319,
+			y: 1456
+			SinceYear: 1350,
+			UntilYear: 100000,
+			Image: "Ayutthaya.png",
+			Wiki: ""
+		},
+		{
+			Name: "Borbodur",
+			x: 3436,
+			y: 1746
+			SinceYear: 928,
+			UntilYear: 100000,
+			Image: "Borbodur.png",
+			Wiki: ""
+		},
+		{
+			Name: "Shwedagon Pagoda",
+			x: 3257,
+			y: 1418
+			SinceYear: -500,
+			UntilYear: 100000,
+			Image: "Shwedagon.png",
+			Wiki: ""
+		},
+	],
+	
+	name: Earth
+}

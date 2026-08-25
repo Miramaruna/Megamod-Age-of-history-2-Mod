@@ -1,0 +1,18 @@
+{
+	Map: [
+		{
+			Folder: "ProjectVita"
+		},
+	    {
+			Folder: "Earth+"
+		},
+		{
+			Folder: "Earth"
+		},
+		{
+			Folder: "Europe"
+		},
+	],
+	
+	Age_of_Civilizations: Maps
+}

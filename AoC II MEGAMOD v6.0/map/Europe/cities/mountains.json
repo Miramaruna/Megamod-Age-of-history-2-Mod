@@ -1,0 +1,19 @@
+{
+	mountains:
+	[
+		{
+			Name: "Карнийские Альпы",
+			Elevation: 2782,
+			x: 1110,
+			y: 1106,
+		},
+		{
+			Name: "Монблан",
+			Elevation: 4810,
+			x: 962,
+			y: 1130,
+		},
+	],
+	
+	name: Earth
+}

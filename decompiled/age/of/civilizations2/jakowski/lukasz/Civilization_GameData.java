@@ -1,0 +1,13 @@
+package age.of.civilizations2.jakowski.lukasz;
+
+import java.io.Serializable;
+
+public class Civilization_GameData implements Serializable {
+   public static final long serialVersionUID = 0L;
+   public int iR;
+   public int iG;
+   public int iB;
+
+   Civilization_GameData() {
+   }
+}

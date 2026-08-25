@@ -1,0 +1,38 @@
+{
+	Disease: [
+		{
+		},
+                {
+			Name: "nepax",
+			
+			BeginningYear: -5000,
+			EndYear: -4999,
+			
+			DURATION_TURNS_MIN: 9,
+			DURATION_TURNS_EXTRA: 25,
+			
+			OUTBREAK_CHANCE: 0.0001,
+			OUTBREAK_PROVINCES: 19,
+			OUTBREAK_PROVINCES_EXTRA: 35,
+			
+			EXPANSION_MODIFIER: 50.0,
+			EXPANSION_MODIFIER_EXTRA: 100.0,
+			
+			OUTBREAK_SCORE_POPULATION: 0.3,
+			OUTBREAK_SCORE_ECONOMY: 0.15,
+			OUTBREAK_SCORE_DEVELOPMENT_LOW: 0.05,
+			OUTBREAK_SCORE_DEVELOPMENT: 0.05,
+			OUTBREAK_SCORE_HAPPINESS_LOW: 0.05,
+			OUTBREAK_SCORE_HAPPINESS: 0.35,
+			
+			DEATH_RATE_MIN:   0.001565,
+			DEATH_RATE_EXTRA: 0.005564,
+			
+			R: 0,
+			G: 128,
+			B: 0,
+		},
+	],
+	
+	Age_of_Civilizations: Diseases
+}

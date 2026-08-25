@@ -1,0 +1,270 @@
+package age.of.civilizations2.jakowski.lukasz;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.ArrayList;
+
+public class Menu_CreateScenario_Events_Out_JoinAlliance extends SliderMenu {
+   public String sName = "";
+
+   public Menu_CreateScenario_Events_Out_JoinAlliance() {
+      ArrayList<MenuElement> menuElements = new ArrayList<>();
+      int tY = CFG.PADDING;
+      menuElements.add(new Button_Menu_LR_Line(null, -1, 0, tY, CFG.GAME_WIDTH, CFG.BUTTON_HEIGHT, true));
+      menuElements.add(new Button_Menu(null, (int)(50.0F * CFG.GUI_SCALE), 0, tY, CFG.GAME_WIDTH, CFG.BUTTON_HEIGHT, true) {
+         @Override
+         public String getTextToDraw() {
+            return Menu_CreateScenario_Events_Out_JoinAlliance.this.sName + ": " + this.getText();
+         }
+      });
+      int var3;
+      menuElements.add(
+         new Button_Menu(
+            null,
+            (int)(50.0F * CFG.GUI_SCALE),
+            0,
+            var3 = tY + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING,
+            CFG.GAME_WIDTH,
+            CFG.BUTTON_HEIGHT,
+            true
+         )
+      );
+      menuElements.add(
+         new Button_Menu(
+            null,
+            (int)(50.0F * CFG.GUI_SCALE),
+            0,
+            tY = var3 + menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING,
+            CFG.GAME_WIDTH,
+            CFG.BUTTON_HEIGHT,
+            true
+         )
+      );
+      tY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+      this.initMenuWithBackButton(
+         new SliderMenuTitle(null, CFG.BUTTON_HEIGHT * 3 / 4, false, false),
+         0,
+         CFG.BUTTON_HEIGHT * 3 / 4,
+         CFG.GAME_WIDTH,
+         CFG.GAME_HEIGHT - CFG.BUTTON_HEIGHT * 3 / 4,
+         menuElements
+      );
+      this.updateLanguage();
+   }
+
+   @Override
+   public void updateLanguage() {
+      this.getMenuElement(0).setText(CFG.langManager.get("Save"));
+
+      try {
+         this.getMenuElement(2)
+            .setText(
+               CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                        .lOutcomes
+                        .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                        .getCivID()
+                     >= 0
+                  ? CFG.langManager.get("Civilization")
+                     + ": "
+                     + CFG.game
+                        .getCiv(
+                           CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                              .lOutcomes
+                              .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                              .getCivID()
+                        )
+                        .getCivName()
+                  : CFG.langManager.get("SelectCivilization")
+            );
+      } catch (IndexOutOfBoundsException var3) {
+         this.getMenuElement(2).setText(CFG.langManager.get("SelectCivilization"));
+      }
+
+      try {
+         this.getMenuElement(3)
+            .setText(
+               CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                        .lOutcomes
+                        .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                        .getCivID2()
+                     >= 0
+                  ? CFG.langManager.get("Civilization")
+                     + ": "
+                     + CFG.game
+                        .getCiv(
+                           CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                              .lOutcomes
+                              .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                              .getCivID2()
+                        )
+                        .getCivName()
+                  : CFG.langManager.get("SelectCivilization")
+            );
+      } catch (IndexOutOfBoundsException var2) {
+         this.getMenuElement(3).setText(CFG.langManager.get("SelectCivilization"));
+      }
+
+      this.sName = CFG.langManager.get("AllianceName") + " [" + CFG.langManager.get("Optional") + "]: ";
+      this.getMenuElement(1)
+         .setText(
+            CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+               .lOutcomes
+               .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+               .getText()
+         );
+      this.getTitle().setText(CFG.langManager.get("JoinAlliance"));
+   }
+
+   @Override
+   public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean sliderMenuIsActive) {
+      super.beginClip(oSB, iTranslateX, iTranslateY, sliderMenuIsActive);
+      super.drawMenu(oSB, iTranslateX, iTranslateY, sliderMenuIsActive);
+      int tempButtonID = 2;
+
+      try {
+         CFG.game
+            .getCiv(
+               CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                  .lOutcomes
+                  .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                  .getCivID()
+            )
+            .getFlag()
+            .draw(
+               oSB,
+               this.getMenuElement(tempButtonID).getPosX() + this.getMenuElement(tempButtonID).getTextPos() / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+               -CFG.game
+                     .getCiv(
+                        CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                           .lOutcomes
+                           .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                           .getCivID()
+                     )
+                     .getFlag()
+                     .getHeight()
+                  + this.getMenuElement(tempButtonID).getPosY()
+                  + this.getMenuPosY()
+                  + this.getMenuElement(tempButtonID).getHeight() / 2
+                  - CFG.CIV_FLAG_HEIGHT / 2
+                  + iTranslateY,
+               CFG.CIV_FLAG_WIDTH,
+               CFG.CIV_FLAG_HEIGHT
+            );
+      } catch (IndexOutOfBoundsException var8) {
+         ImageManager.getImage(Images.randomCivilizationFlag)
+            .draw(
+               oSB,
+               this.getMenuElement(tempButtonID).getPosX() + this.getMenuElement(tempButtonID).getTextPos() / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+               this.getMenuElement(tempButtonID).getPosY()
+                  + this.getMenuPosY()
+                  - ImageManager.getImage(Images.randomCivilizationFlag).getHeight()
+                  + this.getMenuElement(tempButtonID).getHeight() / 2
+                  - CFG.CIV_FLAG_HEIGHT / 2
+                  + iTranslateY,
+               CFG.CIV_FLAG_WIDTH,
+               CFG.CIV_FLAG_HEIGHT
+            );
+      }
+
+      ImageManager.getImage(Images.flag_rect)
+         .draw(
+            oSB,
+            this.getMenuElement(tempButtonID).getPosX() + this.getMenuElement(tempButtonID).getTextPos() / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+            this.getMenuElement(tempButtonID).getPosY()
+               + this.getMenuPosY()
+               + this.getMenuElement(tempButtonID).getHeight() / 2
+               - CFG.CIV_FLAG_HEIGHT / 2
+               + iTranslateY
+         );
+      int var9 = 3;
+
+      try {
+         CFG.game
+            .getCiv(
+               CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                  .lOutcomes
+                  .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                  .getCivID2()
+            )
+            .getFlag()
+            .draw(
+               oSB,
+               this.getMenuElement(var9).getPosX() + this.getMenuElement(var9).getTextPos() / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+               -CFG.game
+                     .getCiv(
+                        CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+                           .lOutcomes
+                           .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+                           .getCivID2()
+                     )
+                     .getFlag()
+                     .getHeight()
+                  + this.getMenuElement(var9).getPosY()
+                  + this.getMenuPosY()
+                  + this.getMenuElement(var9).getHeight() / 2
+                  - CFG.CIV_FLAG_HEIGHT / 2
+                  + iTranslateY,
+               CFG.CIV_FLAG_WIDTH,
+               CFG.CIV_FLAG_HEIGHT
+            );
+      } catch (IndexOutOfBoundsException var7) {
+         ImageManager.getImage(Images.randomCivilizationFlag)
+            .draw(
+               oSB,
+               this.getMenuElement(var9).getPosX() + this.getMenuElement(var9).getTextPos() / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+               this.getMenuElement(var9).getPosY()
+                  + this.getMenuPosY()
+                  - ImageManager.getImage(Images.randomCivilizationFlag).getHeight()
+                  + this.getMenuElement(var9).getHeight() / 2
+                  - CFG.CIV_FLAG_HEIGHT / 2
+                  + iTranslateY,
+               CFG.CIV_FLAG_WIDTH,
+               CFG.CIV_FLAG_HEIGHT
+            );
+      }
+
+      ImageManager.getImage(Images.flag_rect)
+         .draw(
+            oSB,
+            this.getMenuElement(var9).getPosX() + this.getMenuElement(var9).getTextPos() / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+            this.getMenuElement(var9).getPosY() + this.getMenuPosY() + this.getMenuElement(var9).getHeight() / 2 - CFG.CIV_FLAG_HEIGHT / 2 + iTranslateY
+         );
+      super.endClip(oSB, iTranslateX, iTranslateY, sliderMenuIsActive);
+   }
+
+   @Override
+   public final void actionElement(int iID) {
+      switch (iID) {
+         case 0:
+            this.onBackPressed();
+            break;
+         case 1:
+            CFG.showKeyboard();
+            break;
+         case 2:
+            CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+               .lOutcomes
+               .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+               .setText(this.getMenuElement(1).getText());
+            CFG.eventsManager.eSelectCivAction = Event_SelectCivAction.OUT_SELECTCIV_JOINALLIANCE_A;
+            CFG.menuManager.setViewID(Menu.eCREATE_SCENARIO_EVENTS_SELECT_CIV);
+            break;
+         case 3:
+            CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+               .lOutcomes
+               .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+               .setText(this.getMenuElement(1).getText());
+            CFG.eventsManager.eSelectCivAction = Event_SelectCivAction.OUT_SELECTCIV_JOINALLIANCE_B;
+            CFG.menuManager.setViewID(Menu.eCREATE_SCENARIO_EVENTS_SELECT_CIV);
+      }
+   }
+
+   @Override
+   public final void onBackPressed() {
+      CFG.eventsManager.lCreateScenario_Event.lDecisions.get(CFG.eventsManager.iCreateEvent_EditTriggerID)
+         .lOutcomes
+         .get(CFG.eventsManager.iCreateEvent_EditConditionID)
+         .setText(this.getMenuElement(1).getText());
+      CFG.menuManager.setViewID(Menu.eCREATE_SCENARIO_EVENTS_DECISION);
+      CFG.menuManager.setBackAnimation(true);
+   }
+}

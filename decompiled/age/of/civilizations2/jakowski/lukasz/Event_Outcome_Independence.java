@@ -1,0 +1,136 @@
+package age.of.civilizations2.jakowski.lukasz;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Event_Outcome_Independence extends Event_Outcome {
+   public int iCivID = -1;
+   public int iCivID2 = -1;
+   public int iValue = 0;
+
+   Event_Outcome_Independence() {
+   }
+
+   @Override
+   public int getCivID() {
+      return this.iCivID;
+   }
+
+   @Override
+   public void setCivID(int nCivID) {
+      this.iCivID = nCivID;
+   }
+
+   @Override
+   public int getCivID2() {
+      return this.iCivID2;
+   }
+
+   @Override
+   public void setCivID2(int nCivID) {
+      this.iCivID2 = nCivID;
+   }
+
+   @Override
+   public boolean updateCivIDAfterRemove(int nRemovedCivID) {
+      boolean out = false;
+      if (this.iCivID == nRemovedCivID) {
+         this.iCivID = -1;
+         out = true;
+      } else if (nRemovedCivID < this.iCivID) {
+         this.iCivID--;
+      }
+
+      if (this.iCivID2 == nRemovedCivID) {
+         this.iCivID2 = -1;
+         out = true;
+      } else if (nRemovedCivID < this.iCivID2) {
+         this.iCivID2--;
+      }
+
+      return out;
+   }
+
+   @Override
+   public int getValue() {
+      return this.iValue;
+   }
+
+   @Override
+   public void setValue(int nValue) {
+      this.iValue = nValue;
+   }
+
+   @Override
+   public void outcomeAction() {
+      if (this.canMakeAction()) {
+         CFG.game.setGuarantee(this.getCivID(), this.getCivID2(), this.getValue());
+      }
+   }
+
+   public boolean canMakeAction() {
+      try {
+         return this.getCivID() >= 0
+            && this.getCivID() < CFG.game.getCivsSize()
+            && this.getCivID2() >= 0
+            && this.getCivID2() < CFG.game.getCivsSize()
+            && this.getCivID() != this.getCivID2()
+            && (int)CFG.game.getCivRelation_OfCivB(this.getCivID(), this.getCivID2()) != -100;
+      } catch (IndexOutOfBoundsException var2) {
+         return false;
+      }
+   }
+
+   @Override
+   public List<MenuElement_Hover_v2_Element2> getHoverText() {
+      try {
+         ArrayList<MenuElement_Hover_v2_Element2> tElements = new ArrayList<>();
+         ArrayList<MenuElement_Hover_v2_Element_Type> tData = new ArrayList<>();
+         if (this.canMakeAction()) {
+            tData.add(new MenuElement_Hover_v2_Element_Type_Flag(this.getCivID()));
+            tData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("ProclaimIndependence") + ": ", CFG.COLOR_BUTTON_GAME_TEXT_ACTIVE));
+            tData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.game.getCiv(this.getCivID2()).getCivName()));
+            tData.add(new MenuElement_Hover_v2_Element_Type_Flag(this.getCivID2(), CFG.PADDING, CFG.PADDING));
+            tElements.add(new MenuElement_Hover_v2_Element2(tData));
+            tData.clear();
+            tData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("Expires") + ": "));
+            tData.add(
+               new MenuElement_Hover_v2_Element_Type_Text(
+                  Game_Calendar.getDate_ByTurnID(Game_Calendar.TURN_ID + this.getValue()), CFG.COLOR_TEXT_MODIFIER_NEUTRAL2
+               )
+            );
+            tData.add(
+               new MenuElement_Hover_v2_Element_Type_Text(" [" + CFG.langManager.get("Turns") + ": " + this.getValue() + "]", CFG.COLOR_TEXT_MODIFIER_NEUTRAL)
+            );
+            tElements.add(new MenuElement_Hover_v2_Element2(tData));
+            tData.clear();
+         }
+
+         return tElements;
+      } catch (IndexOutOfBoundsException var3) {
+      } catch (NullPointerException var4) {
+      }
+
+      return new ArrayList<>();
+   }
+
+   @Override
+   public String getConditionText() {
+      try {
+         return CFG.langManager.get("GuaranteeIndependence")
+            + ": "
+            + CFG.game.getCiv(this.getCivID()).getCivName()
+            + ", "
+            + CFG.game.getCiv(this.getCivID2()).getCivName()
+            + ": "
+            + this.getValue();
+      } catch (IndexOutOfBoundsException var2) {
+         return CFG.langManager.get("GuaranteeIndependence");
+      }
+   }
+
+   @Override
+   public final void editViewID() {
+      CFG.menuManager.setViewID(Menu.eCREATE_SCENARIO_EVENTS_OUT_INDEPENENCE);
+   }
+}

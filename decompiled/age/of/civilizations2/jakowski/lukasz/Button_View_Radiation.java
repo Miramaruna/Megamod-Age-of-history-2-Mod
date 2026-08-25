@@ -1,0 +1,468 @@
+package age.of.civilizations2.jakowski.lukasz;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+
+public class Button_View_Radiation extends Button {
+   public static final float FONT_SIZE = 0.65F;
+   public static final float FONT_SIZE2 = 0.6F;
+   public boolean row = false;
+   public int iProvinceID = 0;
+   public String sPopulation;
+   public int iPopulationWidth = 0;
+   public String sPopulationPerc;
+   public int iPopulationPercWidth = 0;
+   public boolean isFestivalOrganized = false;
+   public String sLevel = "";
+   public int iLevelWidth = 0;
+
+   public Button_View_Radiation(int iRow, String sText, int nProvinceID, int totalPop, int iPosX, int iPosY, int iWidth, boolean isFestivalOrganized) {
+      super.init(sText, 0, iPosX, iPosY, iWidth, Menu_InGame_View_Army.getButtonHeight(), true, true, false, false);
+      this.row = iRow % 2 == 0;
+      this.iProvinceID = nProvinceID;
+      BigDecimal bd = new BigDecimal(Float.toString(CFG.game.getProvince(this.iProvinceID).getZiverts()));
+      bd = bd.setScale(2, RoundingMode.HALF_UP);
+      this.sPopulation = "" + CFG.getNumberWithSpaces("" + bd.floatValue());
+      CFG.glyphLayout.setText(CFG.fontMain, "" + this.sPopulation);
+      this.iPopulationWidth = (int)(CFG.glyphLayout.width * 0.65F);
+      this.sPopulationPerc = "" + (int)(CFG.game.getProvince(this.iProvinceID).getZiverts() / totalPop * 10000.0F) / 100.0F + "%";
+      CFG.glyphLayout.setText(CFG.fontMain, this.sPopulationPerc);
+      this.iPopulationPercWidth = (int)(CFG.glyphLayout.width * 0.6F);
+      this.isFestivalOrganized = isFestivalOrganized;
+      if (CFG.game.getProvince(nProvinceID).getLevelOfWorkshop() > 0) {
+         this.sLevel = "" + CFG.game.getProvince(nProvinceID).getLevelOfWorkshop();
+         CFG.glyphLayout.setText(CFG.fontMain, this.sLevel);
+         this.iLevelWidth = (int)(CFG.glyphLayout.width * 0.6F);
+      }
+   }
+
+   @Override
+   public void drawButtonBG(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
+      if (this.row) {
+         oSB.setColor(new Color(CFG.COLOR_GRADIENT_TITLE_BLUE.r, CFG.COLOR_GRADIENT_TITLE_BLUE.g, CFG.COLOR_GRADIENT_TITLE_BLUE.b, 0.1F));
+         ImageManager.getImage(Images.pix255_255_255)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.pix255_255_255).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight()
+            );
+         if (isActive || this.getIsHovered()) {
+            oSB.setColor(new Color(CFG.COLOR_GRADIENT_DIPLOMACY.r, CFG.COLOR_GRADIENT_DIPLOMACY.g, CFG.COLOR_GRADIENT_DIPLOMACY.b, 0.65F));
+            ImageManager.getImage(Images.line_32_off1)
+               .draw(
+                  oSB,
+                  this.getPosX() + iTranslateX,
+                  this.getPosY() + 1 - ImageManager.getImage(Images.line_32_off1).getHeight() + iTranslateY,
+                  this.getWidth(),
+                  this.getHeight() - 2,
+                  true,
+                  false
+               );
+         }
+
+         oSB.setColor(new Color(CFG.COLOR_INFO_BOX_GRADIENT.r, CFG.COLOR_INFO_BOX_GRADIENT.g, CFG.COLOR_INFO_BOX_GRADIENT.b, 0.275F));
+         ImageManager.getImage(Images.slider_gradient)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.slider_gradient).getHeight() + iTranslateY,
+               this.getWidth() / 2,
+               this.getHeight()
+            );
+         ImageManager.getImage(Images.slider_gradient)
+            .draw(
+               oSB,
+               this.getPosX() + this.getWidth() - this.getWidth() / 2 + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.slider_gradient).getHeight() + iTranslateY,
+               this.getWidth() / 2,
+               this.getHeight(),
+               true,
+               false
+            );
+         oSB.setColor(new Color(CFG.COLOR_INFO_BOX_GRADIENT.r, CFG.COLOR_INFO_BOX_GRADIENT.g, CFG.COLOR_INFO_BOX_GRADIENT.b, 0.35F));
+         ImageManager.getImage(Images.gradient)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.gradient).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight() / 4
+            );
+         ImageManager.getImage(Images.gradient)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() + this.getHeight() - this.getHeight() / 4 - ImageManager.getImage(Images.gradient).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight() / 4,
+               false,
+               true
+            );
+         oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.55F));
+         ImageManager.getImage(Images.pix255_255_255)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() + this.getHeight() - 1 - ImageManager.getImage(Images.pix255_255_255).getHeight() + iTranslateY,
+               this.getWidth(),
+               1
+            );
+         ImageManager.getImage(Images.pix255_255_255)
+            .draw(
+               oSB, this.getPosX() + iTranslateX, this.getPosY() - ImageManager.getImage(Images.pix255_255_255).getHeight() + iTranslateY, this.getWidth(), 1
+            );
+         oSB.setColor(new Color(0.0F, 0.0F, 0.0F, 0.4F));
+         ImageManager.getImage(Images.line_32_off1)
+            .draw(oSB, this.getPosX() + iTranslateX, this.getPosY() - ImageManager.getImage(Images.line_32_off1).getHeight() + iTranslateY, this.getWidth(), 1);
+         ImageManager.getImage(Images.line_32_off1)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() + this.getHeight() - 1 - ImageManager.getImage(Images.line_32_off1).getHeight() + iTranslateY,
+               this.getWidth(),
+               1
+            );
+      } else {
+         oSB.setColor(new Color(CFG.COLOR_GRADIENT_DIPLOMACY.r, CFG.COLOR_GRADIENT_DIPLOMACY.g, CFG.COLOR_GRADIENT_DIPLOMACY.b, 0.6F));
+         ImageManager.getImage(Images.slider_gradient)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.slider_gradient).getHeight() + iTranslateY,
+               this.getWidth() / 2,
+               this.getHeight()
+            );
+         ImageManager.getImage(Images.slider_gradient)
+            .draw(
+               oSB,
+               this.getPosX() + this.getWidth() - this.getWidth() / 2 + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.slider_gradient).getHeight() + iTranslateY,
+               this.getWidth() / 2,
+               this.getHeight(),
+               true,
+               false
+            );
+         if (isActive || this.getIsHovered()) {
+            oSB.setColor(new Color(CFG.COLOR_GRADIENT_DIPLOMACY.r, CFG.COLOR_GRADIENT_DIPLOMACY.g, CFG.COLOR_GRADIENT_DIPLOMACY.b, 0.45F));
+            ImageManager.getImage(Images.line_32_off1)
+               .draw(
+                  oSB,
+                  this.getPosX() + iTranslateX,
+                  this.getPosY() + 1 - ImageManager.getImage(Images.line_32_off1).getHeight() + iTranslateY,
+                  this.getWidth(),
+                  this.getHeight() - 2,
+                  true,
+                  false
+               );
+         }
+
+         oSB.setColor(new Color(CFG.COLOR_GRADIENT_DARK_BLUE.r, CFG.COLOR_GRADIENT_DARK_BLUE.g, CFG.COLOR_GRADIENT_DARK_BLUE.b, 0.45F));
+         ImageManager.getImage(Images.gradient)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.gradient).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight() / 4
+            );
+         ImageManager.getImage(Images.gradient)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() + this.getHeight() - this.getHeight() / 4 - ImageManager.getImage(Images.gradient).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight() / 4,
+               false,
+               true
+            );
+         oSB.setColor(new Color(CFG.COLOR_GRADIENT_DIPLOMACY.r, CFG.COLOR_GRADIENT_DIPLOMACY.g, CFG.COLOR_GRADIENT_DIPLOMACY.b, 0.85F));
+         ImageManager.getImage(Images.line_32_off1)
+            .draw(oSB, this.getPosX() + iTranslateX, this.getPosY() - ImageManager.getImage(Images.line_32_off1).getHeight() + iTranslateY, this.getWidth(), 1);
+         ImageManager.getImage(Images.line_32_off1)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() + this.getHeight() - 1 - ImageManager.getImage(Images.line_32_off1).getHeight() + iTranslateY,
+               this.getWidth(),
+               1
+            );
+      }
+
+      if (CFG.game.getProvince(this.iProvinceID).getLevelOfWorkshop() > 0 && this.isFestivalOrganized) {
+         oSB.setColor(new Color(1.0F, 1.0F, 1.0F, 0.525F));
+         ImageManager.getImage(Images.patt)
+            .draw2(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.patt).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight()
+            );
+      } else if (this.isFestivalOrganized) {
+         oSB.setColor(new Color(1.0F, 1.0F, 1.0F, 0.525F));
+         ImageManager.getImage(Images.patt)
+            .draw2(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.patt).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight()
+            );
+      }
+
+      if (this.iProvinceID == CFG.game.getActiveProvinceID()) {
+         oSB.setColor(new Color(CFG.COLOR_GRADIENT_TITLE_BLUE.r, CFG.COLOR_GRADIENT_TITLE_BLUE.g, CFG.COLOR_GRADIENT_TITLE_BLUE.b, 0.825F));
+         ImageManager.getImage(Images.slider_gradient)
+            .draw(
+               oSB,
+               this.getPosX() + iTranslateX,
+               this.getPosY() - ImageManager.getImage(Images.slider_gradient).getHeight() + iTranslateY,
+               this.getWidth(),
+               this.getHeight()
+            );
+      }
+
+      if (CFG.game.getProvince(this.iProvinceID).getLevelOfWorkshop() > 0 && this.isFestivalOrganized) {
+         oSB.setColor(Color.WHITE);
+         ImageManager.getImage(Images.b_workshop)
+            .draw(
+               oSB,
+               this.getPosX()
+                  + this.getWidth()
+                  - CFG.PADDING * 2
+                  - this.iPopulationPercWidth
+                  - (int)(ImageManager.getImage(Images.b_workshop).getWidth() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+                  + iTranslateX,
+               this.getPosY()
+                  + this.getHeight() / 2
+                  - (int)(ImageManager.getImage(Images.b_workshop).getHeight() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight())) / 2
+                  + iTranslateY
+                  - ImageManager.getImage(Images.b_workshop).getHeight(),
+               (int)(ImageManager.getImage(Images.b_workshop).getWidth() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight())),
+               (int)(ImageManager.getImage(Images.b_workshop).getHeight() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+            );
+         ImageManager.getImage(Images.nuclear_icon)
+            .draw(
+               oSB,
+               this.getPosX()
+                  + this.getWidth()
+                  - CFG.PADDING * 2
+                  - CFG.PADDING
+                  - (int)(ImageManager.getImage(Images.b_workshop).getWidth() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+                  - this.iPopulationPercWidth
+                  - (int)(ImageManager.getImage(Images.nuclear_icon).getWidth() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight()))
+                  + iTranslateX,
+               this.getPosY()
+                  + this.getHeight() / 2
+                  - (int)(ImageManager.getImage(Images.nuclear_icon).getHeight() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight()))
+                     / 2
+                  + iTranslateY
+                  - ImageManager.getImage(Images.nuclear_icon).getHeight(),
+               (int)(ImageManager.getImage(Images.nuclear_icon).getWidth() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight())),
+               (int)(ImageManager.getImage(Images.nuclear_icon).getHeight() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight()))
+            );
+         CFG.fontMain.getData().setScale(0.6F);
+         CFG.drawTextWithShadow(
+            oSB,
+            this.sLevel,
+            this.getPosX()
+               + this.getWidth()
+               - CFG.PADDING * 2
+               - CFG.PADDING
+               - (int)(ImageManager.getImage(Images.b_workshop).getWidth() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+               - this.iPopulationPercWidth
+               - (int)(ImageManager.getImage(Images.nuclear_icon).getWidth() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight()))
+               - CFG.PADDING
+               - this.iLevelWidth
+               + iTranslateX,
+            this.getPosY() + this.getHeight() / 2 - (int)(this.getTextHeight() * 0.6F / 2.0F) + iTranslateY,
+            CFG.COLOR_TEXT_NUM_OF_PROVINCES
+         );
+         CFG.fontMain.getData().setScale(1.0F);
+      } else {
+         oSB.setColor(Color.WHITE);
+         if (this.isFestivalOrganized) {
+            ImageManager.getImage(Images.nuclear_icon)
+               .draw(
+                  oSB,
+                  this.getPosX()
+                     + this.getWidth()
+                     - CFG.PADDING * 2
+                     - this.iPopulationPercWidth
+                     - (int)(
+                        ImageManager.getImage(Images.nuclear_icon).getWidth() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight())
+                     )
+                     + iTranslateX,
+                  this.getPosY()
+                     + this.getHeight() / 2
+                     - (int)(
+                           ImageManager.getImage(Images.nuclear_icon).getHeight() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight())
+                        )
+                        / 2
+                     + iTranslateY
+                     - ImageManager.getImage(Images.nuclear_icon).getHeight(),
+                  (int)(ImageManager.getImage(Images.nuclear_icon).getWidth() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight())),
+                  (int)(ImageManager.getImage(Images.nuclear_icon).getHeight() * this.getImageScale2(ImageManager.getImage(Images.nuclear_icon).getHeight()))
+               );
+         }
+
+         if (CFG.game.getProvince(this.iProvinceID).getLevelOfWorkshop() > 0) {
+            ImageManager.getImage(Images.b_workshop)
+               .draw(
+                  oSB,
+                  this.getPosX()
+                     + this.getWidth()
+                     - CFG.PADDING * 2
+                     - this.iPopulationPercWidth
+                     - (int)(ImageManager.getImage(Images.b_workshop).getWidth() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+                     + iTranslateX,
+                  this.getPosY()
+                     + this.getHeight() / 2
+                     - (int)(ImageManager.getImage(Images.b_workshop).getHeight() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+                        / 2
+                     + iTranslateY
+                     - ImageManager.getImage(Images.b_workshop).getHeight(),
+                  (int)(ImageManager.getImage(Images.b_workshop).getWidth() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight())),
+                  (int)(ImageManager.getImage(Images.b_workshop).getHeight() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+               );
+            CFG.fontMain.getData().setScale(0.6F);
+            CFG.drawTextWithShadow(
+               oSB,
+               this.sLevel,
+               this.getPosX()
+                  + this.getWidth()
+                  - CFG.PADDING * 2
+                  - this.iPopulationPercWidth
+                  - (int)(ImageManager.getImage(Images.b_workshop).getWidth() * this.getImageScale2(ImageManager.getImage(Images.b_workshop).getHeight()))
+                  - CFG.PADDING
+                  - this.iLevelWidth
+                  + iTranslateX,
+               this.getPosY() + this.getHeight() / 2 - (int)(this.getTextHeight() * 0.6F / 2.0F) + iTranslateY,
+               CFG.COLOR_TEXT_NUM_OF_PROVINCES
+            );
+            CFG.fontMain.getData().setScale(1.0F);
+         }
+      }
+
+      oSB.setColor(Color.WHITE);
+   }
+
+   @Override
+   public void drawText(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
+      CFG.game
+         .getCiv(CFG.game.getProvince(this.iProvinceID).getCivID())
+         .getFlag()
+         .draw(
+            oSB,
+            this.getPosX() + CFG.PADDING + iTranslateX,
+            this.getPosY()
+               + this.getHeight() / 2
+               - (int)(ImageManager.getImage(Images.flag_rect).getHeight() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight())) / 2
+               - CFG.game.getCiv(CFG.game.getProvince(this.iProvinceID).getCivID()).getFlag().getHeight()
+               + iTranslateY,
+            (int)(ImageManager.getImage(Images.flag_rect).getWidth() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight())),
+            (int)(ImageManager.getImage(Images.flag_rect).getHeight() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight()))
+         );
+      ImageManager.getImage(Images.flag_rect)
+         .draw(
+            oSB,
+            this.getPosX() + CFG.PADDING + iTranslateX,
+            this.getPosY()
+               + this.getHeight() / 2
+               - (int)(ImageManager.getImage(Images.flag_rect).getHeight() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight())) / 2
+               + iTranslateY
+               - ImageManager.getImage(Images.flag_rect).getHeight(),
+            (int)(ImageManager.getImage(Images.flag_rect).getWidth() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight())),
+            (int)(ImageManager.getImage(Images.flag_rect).getHeight() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight()))
+         );
+      CFG.fontMain.getData().setScale(0.65F);
+      CFG.drawText(
+         oSB,
+         this.getText(),
+         this.getPosX()
+            + CFG.PADDING * 2
+            + (int)(ImageManager.getImage(Images.flag_rect).getWidth() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight()))
+            + iTranslateX,
+         this.getPosY() + this.getHeight() / 2 - (int)(this.getTextHeight() * 0.65F / 2.0F) + iTranslateY,
+         this.getColor(isActive)
+      );
+      CFG.drawText(
+         oSB,
+         "" + this.sPopulation,
+         this.getPosX()
+            + CFG.PADDING * 2
+            + (int)(ImageManager.getImage(Images.flag_rect).getWidth() * this.getImageScale(ImageManager.getImage(Images.flag_rect).getHeight()))
+            + (int)(this.getTextWidth() * 0.65F)
+            + iTranslateX,
+         this.getPosY() + this.getHeight() / 2 - (int)(this.getTextHeight() * 0.65F / 2.0F) + iTranslateY,
+         CFG.COLOR_TEXT_ECONOMY
+      );
+      CFG.fontMain.getData().setScale(0.6F);
+      CFG.drawText(
+         oSB,
+         this.sPopulationPerc,
+         this.getPosX() + this.getWidth() - CFG.PADDING - this.iPopulationPercWidth + iTranslateX,
+         this.getPosY() + this.getHeight() / 2 - (int)(this.getTextHeight() * 0.6F / 2.0F) + iTranslateY,
+         CFG.COLOR_TEXT_OPTIONS_NS_ACTIVE
+      );
+      CFG.fontMain.getData().setScale(1.0F);
+   }
+
+   public final float getImageScale2(int nHeight) {
+      return (float)CFG.TEXT_HEIGHT / nHeight;
+   }
+
+   @Override
+   public Color getColor(boolean isActive) {
+      return isActive
+         ? CFG.COLOR_TEXT_OPTIONS_NS_ACTIVE
+         : (
+            this.getClickable()
+               ? (
+                  this.getIsHovered()
+                     ? CFG.COLOR_TEXT_OPTIONS_NS_HOVER
+                     : (this.isFestivalOrganized ? CFG.COLOR_TEXT_MODIFIER_POSITIVE : CFG.COLOR_TEXT_OPTIONS_NS)
+               )
+               : new Color(CFG.COLOR_TEXT_MODIFIER_NEGATIVE2.r, CFG.COLOR_TEXT_MODIFIER_NEGATIVE2.g, CFG.COLOR_TEXT_MODIFIER_NEGATIVE2.b, 0.6F)
+         );
+   }
+
+   @Override
+   public int getCurrent() {
+      return this.iProvinceID;
+   }
+
+   public final float getImageScale(int nHeight) {
+      return (float)CFG.TEXT_HEIGHT / nHeight;
+   }
+
+   @Override
+   public void buildElementHover() {
+      BigDecimal bd = new BigDecimal(Float.toString(CFG.game.getProvince(this.iProvinceID).getZiverts()));
+      bd = bd.setScale(2, RoundingMode.HALF_UP);
+      ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
+      ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
+      nData.add(new MenuElement_Hover_v2_Element_Type_Flag(CFG.game.getProvince(this.iProvinceID).getCivID()));
+      nData.add(
+         new MenuElement_Hover_v2_Element_Type_Text(
+            CFG.game.getProvince(this.iProvinceID).getName().length() > 0
+               ? CFG.game.getProvince(this.iProvinceID).getName()
+               : CFG.game.getCiv(CFG.game.getProvince(this.iProvinceID).getCivID()).getCivName(),
+            CFG.COLOR_TEXT_NUM_OF_PROVINCES
+         )
+      );
+      nElements.add(new MenuElement_Hover_v2_Element2(nData));
+      nData.clear();
+      nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.nuclear_icon, CFG.PADDING, CFG.PADDING));
+      nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("Ziverts") + ": "));
+      nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.getNumberWithSpaces("" + bd.floatValue()), CFG.COLOR_TEXT_ECONOMY));
+      nElements.add(new MenuElement_Hover_v2_Element2(nData));
+      nData.clear();
+      this.menuElementHover = new MenuElement_Hover_v2(nElements);
+   }
+}

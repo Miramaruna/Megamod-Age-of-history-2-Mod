@@ -1,0 +1,84 @@
+package com.badlogic.gdx.graphics.g3d.model;
+
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+
+public class MeshPart {
+   public String id;
+   public int primitiveType;
+   public int offset;
+   public int size;
+   public Mesh mesh;
+   public final Vector3 center = new Vector3();
+   public final Vector3 halfExtents = new Vector3();
+   public float radius = -1.0F;
+   private static final BoundingBox bounds = new BoundingBox();
+
+   public MeshPart() {
+   }
+
+   public MeshPart(String id, Mesh mesh, int offset, int size, int type) {
+      this.set(id, mesh, offset, size, type);
+   }
+
+   public MeshPart(MeshPart copyFrom) {
+      this.set(copyFrom);
+   }
+
+   public MeshPart set(MeshPart other) {
+      this.id = other.id;
+      this.mesh = other.mesh;
+      this.offset = other.offset;
+      this.size = other.size;
+      this.primitiveType = other.primitiveType;
+      this.center.set(other.center);
+      this.halfExtents.set(other.halfExtents);
+      this.radius = other.radius;
+      return this;
+   }
+
+   public MeshPart set(String id, Mesh mesh, int offset, int size, int type) {
+      this.id = id;
+      this.mesh = mesh;
+      this.offset = offset;
+      this.size = size;
+      this.primitiveType = type;
+      this.center.set(0.0F, 0.0F, 0.0F);
+      this.halfExtents.set(0.0F, 0.0F, 0.0F);
+      this.radius = -1.0F;
+      return this;
+   }
+
+   public void update() {
+      this.mesh.calculateBoundingBox(bounds, this.offset, this.size);
+      bounds.getCenter(this.center);
+      bounds.getDimensions(this.halfExtents).scl(0.5F);
+      this.radius = this.halfExtents.len();
+   }
+
+   public boolean equals(MeshPart other) {
+      return other == this
+         || other != null && other.mesh == this.mesh && other.primitiveType == this.primitiveType && other.offset == this.offset && other.size == this.size;
+   }
+
+   @Override
+   public boolean equals(Object arg0) {
+      if (arg0 == null) {
+         return false;
+      } else if (arg0 == this) {
+         return true;
+      } else {
+         return !(arg0 instanceof MeshPart) ? false : this.equals((MeshPart)arg0);
+      }
+   }
+
+   public void render(ShaderProgram shader, boolean autoBind) {
+      this.mesh.render(shader, this.primitiveType, this.offset, this.size, autoBind);
+   }
+
+   public void render(ShaderProgram shader) {
+      this.mesh.render(shader, this.primitiveType, this.offset, this.size);
+   }
+}

@@ -1,0 +1,120 @@
+package age.of.civilizations2.jakowski.lukasz;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.ArrayList;
+
+public class Button_Laws extends Button_Build {
+   public static final float FONTSIZE2 = 0.6F;
+   public String sProvinceName;
+   public String sDate;
+   public int iDateWidth;
+   public String sEconomy;
+   public int iEconomyWidth;
+   public String sPoints;
+   public int iPointsWidth;
+   public Color oColor = Color.WHITE;
+   public int iCivID;
+
+   public Button_Laws(int nCivID, int iPosX, int iPosY, int iWidth) {
+      super(CFG.game.getCiv(nCivID).getCivName(), Images.diplo_non_aggression, 0, 0, iPosX, iPosY, iWidth, true, false, 0, 0.0F);
+      this.iCivID = nCivID;
+      this.sDate = CFG.langManager.get("LawsLevel") + ": ";
+      CFG.glyphLayout.setText(CFG.fontMain, this.sDate);
+      this.iDateWidth = (int)(CFG.glyphLayout.width * 0.6F);
+      this.sEconomy = "" + (int)(CFG.game.getCiv(nCivID).getDiplomacyPoints() * 100.0F) / 100.0F;
+      CFG.glyphLayout.setText(CFG.fontMain, this.sEconomy);
+      this.iEconomyWidth = (int)(CFG.glyphLayout.width * 0.6F);
+      this.setMin(CFG.game.getCiv(nCivID).civGameData.skills.getPointsLeftLaws(nCivID));
+   }
+
+   @Override
+   public void drawText(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
+      CFG.game
+         .getCiv(this.iCivID)
+         .getFlag()
+         .draw(
+            oSB,
+            this.getPosX() + Button_Diplomacy.iDiploWidth / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+            this.getPosY() + this.getHeight() / 2 - CFG.CIV_FLAG_HEIGHT / 2 - CFG.game.getCiv(this.iCivID).getFlag().getHeight() + iTranslateY,
+            CFG.CIV_FLAG_WIDTH,
+            CFG.CIV_FLAG_HEIGHT
+         );
+      ImageManager.getImage(Images.flag_rect)
+         .draw(
+            oSB,
+            this.getPosX() + Button_Diplomacy.iDiploWidth / 2 - CFG.CIV_FLAG_WIDTH / 2 + iTranslateX,
+            this.getPosY() + this.getHeight() / 2 - CFG.CIV_FLAG_HEIGHT / 2 - ImageManager.getImage(Images.flag_rect).getHeight() + iTranslateY,
+            CFG.CIV_FLAG_WIDTH,
+            CFG.CIV_FLAG_HEIGHT
+         );
+      CFG.fontMain.getData().setScale(0.7F);
+      CFG.drawTextWithShadow(
+         oSB,
+         this.getText(),
+         this.getPosX() + CFG.PADDING + Button_Diplomacy.iDiploWidth + iTranslateX,
+         this.getPosY() + this.getHeight() / 2 - (int)(this.getTextHeight() * 0.7F) - CFG.PADDING / 2 + iTranslateY,
+         this.getColor(isActive)
+      );
+      CFG.fontMain.getData().setScale(0.6F);
+      CFG.drawTextWithShadow(
+         oSB,
+         this.sDate,
+         this.getPosX() + CFG.PADDING + Button_Diplomacy.iDiploWidth + iTranslateX,
+         this.getPosY() + this.getHeight() / 2 + CFG.PADDING / 2 + iTranslateY,
+         CFG.COLOR_TEXT_OPTIONS_NS_HOVER
+      );
+      CFG.drawTextWithShadow(
+         oSB,
+         this.sEconomy,
+         this.getPosX() + CFG.PADDING + Button_Diplomacy.iDiploWidth + this.iDateWidth + iTranslateX,
+         this.getPosY() + this.getHeight() / 2 + CFG.PADDING / 2 + iTranslateY,
+         CFG.COLOR_TEXT_TECHNOLOGY
+      );
+      ImageManager.getImage(Images.diplo_non_aggression)
+         .draw(
+            oSB,
+            this.getPosX() + CFG.PADDING * 2 + this.iEconomyWidth + Button_Diplomacy.iDiploWidth + this.iDateWidth + iTranslateX,
+            this.getPosY() + this.getHeight() / 2 + CFG.PADDING / 2 - ImageManager.getImage(Images.diplo_non_aggression).getHeight() + iTranslateY,
+            (int)(ImageManager.getImage(Images.diplo_non_aggression).getWidth() * this.getImageScale(Images.diplo_non_aggression, 0.6F)),
+            (int)(ImageManager.getImage(Images.diplo_non_aggression).getHeight() * this.getImageScale(Images.diplo_non_aggression, 0.6F))
+         );
+      CFG.fontMain.getData().setScale(1.0F);
+      ImageManager.getImage(Images.diplo_non_aggression)
+         .draw(
+            oSB,
+            this.getPosX() + this.getWidth() - CFG.PADDING * 2 - ImageManager.getImage(Images.diplo_non_aggression).getWidth() + iTranslateX,
+            this.getPosY() + this.getHeight() / 2 - ImageManager.getImage(Images.diplo_non_aggression).getHeight() / 2 + iTranslateY
+         );
+      CFG.drawTextWithShadow(
+         oSB,
+         this.sPoints,
+         this.getPosX() + this.getWidth() - CFG.PADDING * 3 - ImageManager.getImage(Images.diplo_non_aggression).getWidth() - this.iPointsWidth + iTranslateX,
+         this.getPosY() + this.getHeight() / 2 - CFG.TEXT_HEIGHT / 2 + iTranslateY,
+         this.oColor
+      );
+   }
+
+   @Override
+   public void buildElementHover() {
+      ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
+      ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
+      nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("PointsLeft") + ": "));
+      nData.add(new MenuElement_Hover_v2_Element_Type_Text(this.sPoints, this.oColor));
+      nData.add(
+         new MenuElement_Hover_v2_Element_Type_Text("/" + (int)(CFG.game.getCiv(this.iCivID).getDiplomacyPoints() * 100.0F), CFG.COLOR_TEXT_NUM_OF_PROVINCES)
+      );
+      nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.diplo_non_aggression, CFG.PADDING, 0));
+      nElements.add(new MenuElement_Hover_v2_Element2(nData));
+      nData.clear();
+      this.menuElementHover = new MenuElement_Hover_v2(nElements);
+   }
+
+   @Override
+   public void setMin(int iMin) {
+      this.sPoints = "" + iMin;
+      CFG.glyphLayout.setText(CFG.fontMain, this.sPoints);
+      this.iPointsWidth = (int)CFG.glyphLayout.width;
+      this.oColor = iMin > 0 ? CFG.COLOR_TEXT_NUM_OF_PROVINCES : CFG.COLOR_TEXT_MODIFIER_NEUTRAL;
+   }
+}

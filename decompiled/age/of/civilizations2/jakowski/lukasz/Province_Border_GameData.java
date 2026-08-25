@@ -1,0 +1,29 @@
+package age.of.civilizations2.jakowski.lukasz;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class Province_Border_GameData implements Serializable {
+   public static final long serialVersionUID = 0L;
+   public int withProvinceID;
+   public List<Short> lPointsX;
+   public List<Short> lPointsY;
+
+   public Province_Border_GameData(int withProvinceID, List<Short> nPointsX, List<Short> nPointsY) {
+      this.withProvinceID = withProvinceID;
+      this.lPointsX = nPointsX;
+      this.lPointsY = nPointsY;
+   }
+
+   public final int getWithProvinceID() {
+      return this.withProvinceID;
+   }
+
+   public final List<Short> getPointsX() {
+      return this.lPointsX;
+   }
+
+   public final List<Short> getPointsY() {
+      return this.lPointsY;
+   }
+}
