@@ -19,11 +19,13 @@ public class AI_Build_Option_Port extends AI_Build_Option {
       } catch (NullPointerException var3) {
       }
 
-      return 2.5F
-         * (
+      return Math.max(
+         80.0F,
+         2.5F * (
             CFG.game.getCiv(nCivID).civGameData.civPersonality.BUILD_PORT
                * (1.0F - CFG.game.getCiv(nCivID).iNumOf_Ports / Math.max(CFG.game.getCiv(nCivID).getSeaAccess_Provinces_Size(), 1))
-         );
+         )
+      );
    }
 
    @Override
