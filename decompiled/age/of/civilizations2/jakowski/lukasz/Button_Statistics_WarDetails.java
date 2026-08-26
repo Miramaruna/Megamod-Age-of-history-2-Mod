@@ -21,9 +21,10 @@ public class Button_Statistics_WarDetails extends Button_Statistics {
    public String iEconomicLosses;
    public int iEconomicLossesWidth;
    public Color oColorEconomicLosses;
-   public String sProvinces;
-   public int iParticipation;
-   public Color oColorParticipation;
+    public String sProvinces;
+    public int iParticipation;
+    public int iWarFaith;
+    public Color oColorParticipation;
    public Image civFlag = null;
    public boolean canPeaceOut = false;
    public long ANIMATION_TIME = 0L;
@@ -33,18 +34,19 @@ public class Button_Statistics_WarDetails extends Button_Statistics {
    public float fAlphaMod = 0.0F;
    public boolean backAnimation = false;
 
-   public Button_Statistics_WarDetails(
-      int nCivID,
-      int iCivilianDeaths,
-      int iEconomicLosses,
-      int iParticipation,
-      int iProvinces,
-      int iProvincesTotal,
-      int iPosX,
-      int iPosY,
-      int iWidth,
-      boolean canPeaceOut
-   ) {
+    public Button_Statistics_WarDetails(
+       int nCivID,
+       int iCivilianDeaths,
+       int iEconomicLosses,
+       int iParticipation,
+       int iWarFaith,
+       int iProvinces,
+       int iProvincesTotal,
+       int iPosX,
+       int iPosY,
+       int iWidth,
+       boolean canPeaceOut
+    ) {
       super(
          CFG.FOG_OF_WAR == 2
             ? (CFG.game.getPlayer(CFG.PLAYER_TURNID).getMetCivilization(nCivID) ? CFG.game.getCiv(nCivID).getCivName() : CFG.langManager.get("Undiscovered"))
@@ -70,7 +72,8 @@ public class Button_Statistics_WarDetails extends Button_Statistics {
 
       this.iCivilianDeaths = CFG.getNumberWithSpaces("" + iCivilianDeaths);
       this.iEconomicLosses = CFG.getNumberWithSpaces("" + iEconomicLosses);
-      this.iParticipation = iParticipation;
+       this.iParticipation = iParticipation;
+       this.iWarFaith = iWarFaith;
       CFG.glyphLayout.setText(CFG.fontMain, "" + iCivilianDeaths);
       this.iCivilianDeathsWidth = (int)(CFG.glyphLayout.width * 0.65F);
       CFG.glyphLayout.setText(CFG.fontMain, "" + iEconomicLosses);
@@ -720,8 +723,42 @@ public class Button_Statistics_WarDetails extends Button_Statistics {
             + CFG.PADDING / 2
             + (int)((CFG.TEXT_HEIGHT - CFG.TEXT_HEIGHT * 0.75F) / 2.0F + CFG.TEXT_HEIGHT * 0.75F - CFG.TEXT_HEIGHT * 0.6F)
             + iTranslateY,
-         this.oColorParticipation
-      );
+          this.oColorParticipation
+       );
+       CFG.fontMain.getData().setScale(0.6F);
+       CFG.glyphLayout.setText(CFG.fontMain, "" + this.iParticipation + "%");
+       int tPartW = (int)CFG.glyphLayout.width;
+       int tFaithImg = (this.iCivID >= 0 && this.iCivID == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID())
+          ? AI_Assistant.getWarFaithImageID() : AI_Assistant.getWarFaithEnemyImageID();
+       int tBaseX = this.getPosX()
+          + this.ANIMATION_POSX
+          + CFG.PADDING * 3
+          + (int)Math.min((float)(this.getMaxNameWidth() - CFG.PADDING), this.getTextWidth() * 0.75F)
+          + (int)(ImageManager.getImage(Images.flag_rect).getWidth() * this.getImageScale(Images.flag_rect))
+          + tPartW
+          + CFG.PADDING
+          + iTranslateX;
+       int tBaseY = this.getPosY()
+          + CFG.PADDING
+          + CFG.PADDING / 2
+          + (int)((CFG.TEXT_HEIGHT - CFG.TEXT_HEIGHT * 0.75F) / 2.0F + CFG.TEXT_HEIGHT * 0.75F - CFG.TEXT_HEIGHT * 0.6F)
+          + iTranslateY;
+       if (tFaithImg >= 0) {
+          int tIH = ImageManager.getImage(tFaithImg).getHeight();
+          int tIW = ImageManager.getImage(tFaithImg).getWidth();
+          ImageManager.getImage(tFaithImg)
+             .draw(oSB, tBaseX, tBaseY + (int)(CFG.TEXT_HEIGHT * 0.6F) / 2 - tIH / 2, tIW, tIH);
+          tBaseX += tIW + CFG.PADDING / 2;
+       }
+       CFG.drawTextWithShadow(
+          oSB,
+          "Вера: " + this.iWarFaith + "%",
+          tBaseX,
+          tBaseY,
+          this.iWarFaith >= 50
+             ? new Color(CFG.COLOR_TEXT_MODIFIER_POSITIVE.r, CFG.COLOR_TEXT_MODIFIER_POSITIVE.g, CFG.COLOR_TEXT_MODIFIER_POSITIVE.b, 0.85F)
+             : CFG.COLOR_TEXT_MODIFIER_NEGATIVE2
+       );
       CFG.drawTextWithShadow(
          oSB,
          "" + this.sProvinces,
@@ -829,10 +866,23 @@ public class Button_Statistics_WarDetails extends Button_Statistics {
       nData.clear();
       nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("Surrender") + ": "));
       nData.add(new MenuElement_Hover_v2_Element_Type_Text("" + this.iParticipation + "%", CFG.COLOR_BUTTON_GAME_TEXT_ACTIVE));
-      nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.diplo_rivals, CFG.PADDING, 0));
-      nElements.add(new MenuElement_Hover_v2_Element2(nData));
-      nData.clear();
-      nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("CivilianDeaths") + ": "));
+       nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.diplo_rivals, CFG.PADDING, 0));
+       nElements.add(new MenuElement_Hover_v2_Element2(nData));
+       nData.clear();
+       nData.add(new MenuElement_Hover_v2_Element_Type_Text("Вера в войну: " + this.iWarFaith + "%", CFG.COLOR_TEXT_MODIFIER_NEUTRAL));
+       nData.add(
+          new MenuElement_Hover_v2_Element_Type_Image(
+             (this.iCivID >= 0 && this.iCivID == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()
+                ? AI_Assistant.getWarFaithImageID() : AI_Assistant.getWarFaithEnemyImageID()) >= 0
+                ? (this.iCivID >= 0 && this.iCivID == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()
+                   ? AI_Assistant.getWarFaithImageID() : AI_Assistant.getWarFaithEnemyImageID())
+                : Images.diplo_rivals,
+             CFG.PADDING, 0
+          )
+       );
+       nElements.add(new MenuElement_Hover_v2_Element2(nData));
+       nData.clear();
+       nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("CivilianDeaths") + ": "));
       nData.add(new MenuElement_Hover_v2_Element_Type_Text("" + this.iCivilianDeaths, CFG.COLOR_TEXT_MODIFIER_NEGATIVE2));
       nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.population, CFG.PADDING, 0));
       nElements.add(new MenuElement_Hover_v2_Element2(nData));

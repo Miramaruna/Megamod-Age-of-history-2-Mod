@@ -527,50 +527,122 @@ public class Turn_NewTurn extends Thread {
             }
          }
 
-         AI_Assistant.PARTISAN_HOTSPOTS.clear();
+            AI_Assistant.PARTISAN_HOTSPOTS.clear();
+           int tPlayer = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
 
-         for (int pi = 0; pi < CFG.game.getProvincesSize(); pi++) {
-            Province tProvP = CFG.game.getProvince(pi);
-            if (tProvP.isOccupied()) {
-               int tRealOwner = tProvP.getTrueOwnerOfProvince();
-               int tOccupier = tProvP.getCivID();
-               if (tRealOwner > 0
-                     && tRealOwner != tOccupier
-                     && tOccupier == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()
-                     && tProvP.getPopulationData().getPopulation() > 0) {
-                  float tForeignShare = 1.0F
-                     - (float)tProvP.getPopulationData().getPopulationOfCivID(tRealOwner) / (float)tProvP.getPopulationData().getPopulation();
-                  if (tForeignShare > 0.35F) {
-                     AI_Assistant.PARTISAN_HOTSPOTS.add(pi);
-                     float tChance = 0.01F + 0.05F * tForeignShare - 0.02F * (float)tProvP.getLevelOfFort();
-                     if (tChance > 0.005F && CFG.oR.nextInt(1000) < (int)(tChance * 1000.0F)) {
-                        int tGarrison = tProvP.getArmyCivID(tOccupier);
-                        if (tGarrison > 100) {
-                           int tLosses = Math.max(50, (int)((float)tGarrison * (0.05F + (float)CFG.oR.nextInt(10) / 100.0F)));
-                           tProvP.updateArmy(tOccupier, tGarrison - tLosses);
-                           tProvP.setRevolutionaryRisk(Math.min(1.0F, tProvP.getRevolutionaryRisk() + 0.05F));
-                           Gdx.app.log("AoC", "PARTISANS: province " + pi + ", occupier lost " + tLosses);
-                           if (tOccupier == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()) {
-                              CFG.toast.setInView(
-                                 CFG.langManager.get("Partisans_Attack") + "!", CFG.COLOR_TEXT_MODIFIER_NEGATIVE2
-                              );
-                              CFG.toast.setTimeInView(3000);
-                           }
-                        }
+          // 1) process persistent uprisings (suppression + attack each turn)
+          java.util.ArrayList<Integer> tUprKeys = new java.util.ArrayList<>(AI_Assistant.PARTISAN_UPRISINGS.keySet());
+          for (int i = 0; i < tUprKeys.size(); i++) {
+             int pi = tUprKeys.get(i);
+             Province tProvP = CFG.game.getProvince(pi);
+             int tOccupier = tProvP.getCivID();
+             int tRealOwner = tProvP.getTrueOwnerOfProvince();
+
+             // validate: still occupied by the player with a different true owner
+             if (!tProvP.isOccupied() || tRealOwner <= 0 || tRealOwner == tOccupier
+                   || tOccupier != tPlayer || tProvP.getPopulationData().getPopulation() <= 0) {
+                AI_Assistant.PARTISAN_UPRISINGS.remove(pi);
+                continue;
+             }
+
+             int pCount = AI_Assistant.PARTISAN_UPRISINGS.get(pi);
+             int tGarrison = tProvP.getArmyCivID(tOccupier);
+             int tFort = tProvP.getLevelOfFort();
+
+             // SUPPRESSION: forts and a strong garrison actively reduce the partisan force
+             int tSuppress = tFort * 50 + (tGarrison > pCount ? (tGarrison - pCount) : 0);
+             pCount -= tSuppress;
+             if (pCount <= 0) {
+                AI_Assistant.PARTISAN_UPRISINGS.remove(pi);
+                Gdx.app.log("AoC", "PARTISANS SUPPRESSED: province " + pi);
+                continue;
+             }
+
+             if (pCount > tGarrison) {
+                // partisans break through -> capture province for the true owner, survivors / 3
+                int tSurv = (pCount - tGarrison) / 3;
+                if (tSurv < 0) {
+                   tSurv = 0;
+                }
+
+                tProvP.setCivID(tRealOwner, true);
+                tProvP.updateArmy(tRealOwner, tSurv);
+                AI_Assistant.PARTISAN_UPRISINGS.remove(pi);
+                Gdx.app.log("AoC", "PARTISANS CAPTURE: province " + pi + ", survivors=" + tSurv);
+                CFG.toast.setInView(
+                      CFG.langManager.get("Partisans_Attack") + "!", CFG.COLOR_TEXT_MODIFIER_NEGATIVE2
+                );
+                CFG.toast.setTimeInView(3000);
+             } else {
+                // partisans harass the garrison (occupier bleeds troops) but are contained
+                int tLoss = pCount / 2;
+                tProvP.updateArmy(tOccupier, Math.max(0, tGarrison - tLoss));
+                AI_Assistant.PARTISAN_UPRISINGS.put(pi, pCount);
+                AI_Assistant.PARTISAN_HOTSPOTS.add(pi);
+                tProvP.setRevolutionaryRisk(Math.min(1.0F, tProvP.getRevolutionaryRisk() + 0.05F));
+             }
+          }
+
+          // 2) spawn new uprisings (5% per qualifying province, only if not already uprising)
+          for (int pi = 0; pi < CFG.game.getProvincesSize(); pi++) {
+             if (AI_Assistant.PARTISAN_UPRISINGS.containsKey(pi)) {
+                continue;
+             }
+
+             Province tProvP = CFG.game.getProvince(pi);
+             if (tProvP.isOccupied()) {
+                int tRealOwner = tProvP.getTrueOwnerOfProvince();
+                int tOccupier = tProvP.getCivID();
+                if (tRealOwner > 0
+                      && tRealOwner != tOccupier
+                      && tOccupier == tPlayer
+                      && tProvP.getPopulationData().getPopulation() > 0) {
+                     // enough garrison suppresses new partisan uprisings
+                     if (tProvP.getArmyCivID(tOccupier) >= AI_Assistant.GARRISON_SUPPRESS_MIN) {
+                        continue;
                      }
-                  }
-               }
-            }
-         }
+                    float tForeignShare = 1.0F
+                          - (float)tProvP.getPopulationData().getPopulationOfCivID(tRealOwner) / (float)tProvP.getPopulationData().getPopulation();
+                    if (tForeignShare > 0.35F) {
+                       float tFaith = AI_Assistant.getFaithRaw(tRealOwner);
+                       // both eruption chance and size scale with war faith:
+                       // low faith -> rare and weak uprisings
+                       if ((float)CFG.oR.nextInt(100) < 5.0F * tFaith) {
+                          int tPop = tProvP.getPopulationData().getPopulation();
+                          int tEcon = tProvP.getEconomy();
+                          float tDev = tProvP.getDevelopmentLevel();
+                          float tHappy = tProvP.getHappiness();
+                          // number of partisans emerging (clamped >= 0)
+                          float tPartisansF = 0.172F * ((tPop * 0.25F)
+                                - (tEcon * 0.2F)
+                                - ((tPop * 0.25F) - tPop * tDev)
+                                - ((tPop * 0.25F) * (-tHappy)));
+                          // weaker faith in victory -> fewer partisans
+                          tPartisansF *= tFaith;
+                          int tPartisans = (int)tPartisansF;
+                          if (tPartisans < 0) {
+                             tPartisans = 0;
+                          }
 
-Gdx.app.log("AoC", "ERR: 0000, fontMain" + CFG.fontMain.getData().scaleY);
+                          if (tPartisans > 0) {
+                             AI_Assistant.PARTISAN_UPRISINGS.put(pi, tPartisans);
+                             AI_Assistant.PARTISAN_HOTSPOTS.add(pi);
+                             Gdx.app.log("AoC", "PARTISANS UPRISING: province " + pi + ", count=" + tPartisans);
+                          }
+                       }
+                    }
+                }
+             }
+          }
 
-         for (int var40 = 1; var40 < CFG.game.getCivsSize(); var40++) {
-            CFG.game.getCiv(var40).updateBonuses();
-            CFG.game.getCiv(var40).civGameData.updateGift_Received();
-         }
+           Gdx.app.log("AoC", "ERR: 0000, fontMain" + CFG.fontMain.getData().scaleY);
 
-         Gdx.app.log("AoC", "ERR: 1111, fontMain" + CFG.fontMain.getData().scaleY);
+           for (int var40 = 1; var40 < CFG.game.getCivsSize(); var40++) {
+              CFG.game.getCiv(var40).updateBonuses();
+              CFG.game.getCiv(var40).civGameData.updateGift_Received();
+           }
+
+          Gdx.app.log("AoC", "ERR: 1111, fontMain" + CFG.fontMain.getData().scaleY);
          DiplomacyManager.updateGoldenAge();
          Gdx.app.log("AoC", "ERR: 222, fontMain" + CFG.fontMain.getData().scaleY);
          DiplomacyManager.sendUncivilizedMessages();

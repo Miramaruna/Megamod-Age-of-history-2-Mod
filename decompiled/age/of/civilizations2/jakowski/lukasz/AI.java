@@ -161,13 +161,24 @@ public class AI {
             try {
                if (!CFG.game.getCiv(var12).getControlledByPlayer()
                   || AI_Assistant.ENABLED && var12 == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()) {
-                  if (CFG.game.getCiv(var12).getNumOfProvinces() > 0) {
-                     this.iLoadingTurnActionsOfCivID = var12;
-                     CFG.setRender_3(true);
-                     this.lAI_Styles.get(CFG.game.getCiv(var12).getAI_Style()).turnOrdersEssential(var12);
-                     this.lAI_Styles.get(CFG.game.getCiv(var12).getAI_Style()).turnOrders(var12);
-                  } else {
-                     this.lAI_Styles.get(CFG.game.getCiv(var12).getAI_Style()).respondToMessages(var12);
+                  boolean tAssistantOrder = AI_Assistant.ENABLED && var12 == CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
+                  if (tAssistantOrder) {
+                     AI_Assistant.IS_ISSUING_ORDERS = true;
+                  }
+
+                  try {
+                     if (CFG.game.getCiv(var12).getNumOfProvinces() > 0) {
+                        this.iLoadingTurnActionsOfCivID = var12;
+                        CFG.setRender_3(true);
+                        this.lAI_Styles.get(CFG.game.getCiv(var12).getAI_Style()).turnOrdersEssential(var12);
+                        this.lAI_Styles.get(CFG.game.getCiv(var12).getAI_Style()).turnOrders(var12);
+                     } else {
+                        this.lAI_Styles.get(CFG.game.getCiv(var12).getAI_Style()).respondToMessages(var12);
+                     }
+                  } finally {
+                     if (tAssistantOrder) {
+                        AI_Assistant.IS_ISSUING_ORDERS = false;
+                     }
                   }
                }
             } catch (IndexOutOfBoundsException var8) {

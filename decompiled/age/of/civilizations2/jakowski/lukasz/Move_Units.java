@@ -8,6 +8,7 @@ public class Move_Units {
    public int iNumOfUnits;
    public int iNumOfUnitsWidth;
    public MoveUnits_Line moveUnitsLine = null;
+   public boolean isAssistantOrder = false;
 
    public Move_Units(int iFromProvinceID, int iToProvinceID, int iNumOfUnits, boolean buildLane) {
       this.iFromProvinceID = iFromProvinceID;

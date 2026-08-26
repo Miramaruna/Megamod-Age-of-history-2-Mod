@@ -384,20 +384,20 @@ public class Menu_InGame extends SliderMenu {
       menuElements.add(
          new Text(null, -1, 0, 0, ImageManager.getImage(Images.top_left2).getHeight()) {
             @Override
-            public int getPosX() {
-               return Menu_InGame.this.getMenuElement(10).getVisible()
-                  ? Menu_InGame.this.getMenuElement(10).getPosX() + Menu_InGame.this.getMenuElement(10).getWidth()
-                  : Menu_InGame.this.getMenuElement(CFG.FREEPLAY_MODE ? 32 : 16).getPosX()
-                     + Menu_InGame.this.getMenuElement(CFG.FREEPLAY_MODE ? 32 : 16).getWidth();
-            }
+             public int getPosX() {
+                return Menu_InGame.this.getMenuElement(10).getVisible()
+                   ? Menu_InGame.this.getMenuElement(10).getPosX() + Menu_InGame.this.getMenuElement(10).getWidth()
+                   : Menu_InGame.this.getMenuElement(CFG.FREEPLAY_MODE ? 32 : 16).getPosX()
+                      + Menu_InGame.this.getMenuElement(CFG.FREEPLAY_MODE ? 32 : 16).getWidth();
+             }
 
-            @Override
-            public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
-               CFG.fontMain.getData().setScale(0.6F);
-               CFG.drawText(
-                  oSB,
-                  this.sText,
-                  this.getPosX() + CFG.PADDING + ImageManager.getImage(Images.top_left2).getWidth() + iTranslateX,
+             @Override
+             public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
+                CFG.fontMain.getData().setScale(0.6F);
+                CFG.drawText(
+                   oSB,
+                   this.sText,
+                   this.getPosX() + CFG.PADDING + ImageManager.getImage(Images.top_left2).getWidth() + 40 + iTranslateX,
                   this.getPosY() + (int)(this.getHeight() - this.getTextHeight() * 0.6F) / 2 + iTranslateY,
                   this.getColor(isActive)
                );
@@ -440,17 +440,17 @@ public class Menu_InGame extends SliderMenu {
       menuElements.add(
          new Text(null, -1, 0, 0, ImageManager.getImage(Images.top_left2).getHeight()) {
             @Override
-            public int getPosX() {
-               return Menu_InGame.this.getMenuElement(8).getPosX() + Menu_InGame.this.getMenuElement(8).getWidth();
-            }
+             public int getPosX() {
+                return Menu_InGame.this.getMenuElement(8).getPosX() + Menu_InGame.this.getMenuElement(8).getWidth();
+             }
 
-            @Override
-            public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
-               CFG.fontMain.getData().setScale(0.6F);
-               CFG.drawText(
-                  oSB,
-                  this.sText,
-                  this.getPosX() + CFG.PADDING + ImageManager.getImage(Images.top_left2).getWidth() + iTranslateX,
+             @Override
+             public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
+                CFG.fontMain.getData().setScale(0.6F);
+                CFG.drawText(
+                   oSB,
+                   this.sText,
+                   this.getPosX() + CFG.PADDING + ImageManager.getImage(Images.top_left2).getWidth() + 40 + iTranslateX,
                   this.getPosY() + (int)(this.getHeight() - this.getTextHeight() * 0.6F) / 2 + iTranslateY,
                   this.getColor(isActive)
                );
@@ -511,21 +511,26 @@ public class Menu_InGame extends SliderMenu {
                nData.add(new MenuElement_Hover_v2_Element_Type_Text(this.getText(), CFG.COLOR_BUTTON_GAME_TEXT_ACTIVE));
                nElements.add(new MenuElement_Hover_v2_Element2(nData));
                nData.clear();
-               nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("Player") + ": "));
-               nData.add(new MenuElement_Hover_v2_Element_Type_Text("" + (CFG.PLAYER_TURNID + 1), CFG.COLOR_BUTTON_GAME_TEXT_ACTIVE));
-               nElements.add(new MenuElement_Hover_v2_Element2(nData));
-               nData.clear();
-               this.menuElementHover = new MenuElement_Hover_v2(nElements);
-            }
+                nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("Player") + ": "));
+                nData.add(new MenuElement_Hover_v2_Element_Type_Text("" + (CFG.PLAYER_TURNID + 1), CFG.COLOR_BUTTON_GAME_TEXT_ACTIVE));
+                nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                nData.clear();
+                this.menuElementHover = new MenuElement_Hover_v2(nElements);
+             }
 
-            @Override
-            public void drawMenuElementHover2(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
-               if (this.menuElementHover != null) {
-                  this.menuElementHover.drawAlwaysBelow(oSB, Touch.getMousePosX(), ImageManager.getImage(Images.top_left2).getHeight());
-               }
-            }
-         }
-      );
+             @Override
+             public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
+                super.draw(oSB, iTranslateX + 40, iTranslateY, isActive, scrollableY);
+             }
+
+             @Override
+             public void drawMenuElementHover2(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
+                if (this.menuElementHover != null) {
+                   this.menuElementHover.drawAlwaysBelow(oSB, Touch.getMousePosX(), ImageManager.getImage(Images.top_left2).getHeight());
+                }
+             }
+          }
+       );
       menuElements.get(menuElements.size() - 1).setVisible(false);
       menuElements.add(new Text("", 0, 0));
       menuElements.add(
@@ -590,7 +595,7 @@ public class Menu_InGame extends SliderMenu {
       menuElements.add(new Text("", 0, 0));
       menuElements.add(new Text("", 0, 0));
       menuElements.add(new Text("", 0, 0));
-      this.initMenu(null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements);
+       this.initMenu(null, 0, 0, CFG.GAME_WIDTH, CFG.GAME_HEIGHT, menuElements);
       this.setMenuElement(
          2,
          new Text("3.2", 0, 0, 0, ImageManager.getImage(Images.top_left2).getHeight()) {
@@ -823,73 +828,177 @@ public class Menu_InGame extends SliderMenu {
             }
          }
       );
-      this.setMenuElement(
-         15,
-         new Text("0", 0, 0, 0, ImageManager.getImage(Images.top_left2).getHeight()) {
-            @Override
-            public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
-               if (CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).isAtWar()) {
-                  ImageManager.getImage(Images.diplo_war)
-                     .draw(
-                        oSB,
-                        this.getPosX() + iTranslateX,
-                        this.getPosY() + this.getHeight() / 2 - ImageManager.getImage(Images.diplo_war).getHeight() / 2 + iTranslateY
-                     );
-                  int var6;
-                  super.draw(oSB, var6 = iTranslateX + ImageManager.getImage(Images.diplo_war).getWidth() + CFG.PADDING, iTranslateY, isActive, scrollableY);
-               }
-            }
+       this.setMenuElement(
+          15,
+          new Text("0", 0, 0, 0, ImageManager.getImage(Images.top_left2).getHeight()) {
+             private int getEnemyCivID() {
+                int tPlayer = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
+                int tAlliance = CFG.game.getCiv(tPlayer).getAllianceID();
+                int tBest = -1;
+                int tBestProvs = -1;
+                for (int wi = 0; wi < CFG.game.getWarsSize(); wi++) {
+                   War_GameData tWar = CFG.game.getWar(wi);
+                   boolean tInWar = false;
+                   for (int i = 0; i < tWar.getAggressorsSize(); i++) {
+                      if (tWar.getAggressorID(i).getCivID() == tPlayer) tInWar = true;
+                   }
+                   for (int i = 0; i < tWar.getDefendersSize(); i++) {
+                      if (tWar.getDefenderID(i).getCivID() == tPlayer) tInWar = true;
+                   }
+                   if (!tInWar && tAlliance >= 0) {
+                      for (int i = 0; i < tWar.getAggressorsSize(); i++) {
+                         if (CFG.game.getCiv(tWar.getAggressorID(i).getCivID()).getAllianceID() == tAlliance) tInWar = true;
+                      }
+                      for (int i = 0; i < tWar.getDefendersSize(); i++) {
+                         if (CFG.game.getCiv(tWar.getDefenderID(i).getCivID()).getAllianceID() == tAlliance) tInWar = true;
+                      }
+                   }
+                   if (!tInWar) {
+                      continue;
+                   }
+                   java.util.ArrayList<Integer> tEnemies = new java.util.ArrayList<>();
+                   if (tWar.getDefendersSize() > 0) {
+                      for (int i = 0; i < tWar.getDefendersSize(); i++) {
+                         tEnemies.add(tWar.getDefenderID(i).getCivID());
+                      }
+                   } else if (tWar.getAggressorsSize() > 0) {
+                      for (int i = 0; i < tWar.getAggressorsSize(); i++) {
+                         tEnemies.add(tWar.getAggressorID(i).getCivID());
+                      }
+                   }
+                   for (int i = 0; i < tEnemies.size(); i++) {
+                      int e = tEnemies.get(i);
+                      if (e == tPlayer) {
+                         continue;
+                      }
+                      int p = CFG.game.getCiv(e).getNumOfProvinces();
+                      if (p > tBestProvs) {
+                         tBestProvs = p;
+                         tBest = e;
+                      }
+                   }
+                }
+                return tBest;
+             }
 
-            @Override
-            public int getPosX() {
-               try {
-                  return CFG.menuManager.getInGame().getMenuElement(14).getPosX() + CFG.menuManager.getInGame().getMenuElement(14).getWidth() + CFG.PADDING;
-               } catch (NullPointerException var2) {
-                  return 0;
-               }
-            }
+             @Override
+             public void draw(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive, boolean scrollableY) {
+                int tX = this.getPosX() + iTranslateX;
+                int tY = this.getPosY() + iTranslateY;
+                int tH = this.getHeight();
+                if (CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).isAtWar()) {
+                   int tIH = ImageManager.getImage(Images.diplo_war).getHeight();
+                   ImageManager.getImage(Images.diplo_war).draw(oSB, tX, tY + tH / 2 - tIH / 2);
+                   tX += ImageManager.getImage(Images.diplo_war).getWidth() + CFG.PADDING;
+                   String tCap = "" + CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).getCapitulationPoints() + "%";
+                   CFG.drawText(oSB, tCap, tX, tY + (int)(tH - this.getTextHeight()) / 2, this.getColor(isActive));
+                   CFG.glyphLayout.setText(CFG.fontMain, tCap);
+                   tX += (int)CFG.glyphLayout.width + CFG.PADDING;
+                }
+                int tOur = AI_Assistant.getWarFaithImageID();
+                if (tOur >= 0) {
+                   int tFW = ImageManager.getImage(tOur).getHeight();
+                   ImageManager.getImage(tOur).draw(oSB, tX, tY + tH / 2 - tFW / 2);
+                   tX += ImageManager.getImage(tOur).getWidth() + CFG.PADDING;
+                }
+                String tOurF = "" + (int)(AI_Assistant.getFaith(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()) * 100.0F) + "%";
+                CFG.drawText(oSB, tOurF, tX, tY + (int)(tH - this.getTextHeight()) / 2, this.getColor(isActive));
+                CFG.glyphLayout.setText(CFG.fontMain, tOurF);
+                tX += (int)CFG.glyphLayout.width + CFG.PADDING;
+                int tEnemy = this.getEnemyCivID();
+                if (CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).isAtWar() && tEnemy >= 0) {
+                   int tEImg = AI_Assistant.getWarFaithEnemyImageID();
+                   if (tEImg >= 0) {
+                      int tFW = ImageManager.getImage(tEImg).getHeight();
+                      ImageManager.getImage(tEImg).draw(oSB, tX, tY + tH / 2 - tFW / 2);
+                      tX += ImageManager.getImage(tEImg).getWidth() + CFG.PADDING;
+                   }
+                   String tEF = "" + (int)(AI_Assistant.getFaith(tEnemy) * 100.0F) + "%";
+                   CFG.drawText(oSB, tEF, tX, tY + (int)(tH - this.getTextHeight()) / 2, this.getColor(isActive));
+                }
+             }
 
-            @Override
-            public int getWidth() {
-               return CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).isAtWar()
-                  ? super.getWidth() + ImageManager.getImage(Images.diplo_war).getWidth() + CFG.PADDING
-                  : 0;
-            }
+             @Override
+             public int getPosX() {
+                try {
+                   return CFG.menuManager.getInGame().getMenuElement(14).getPosX() + CFG.menuManager.getInGame().getMenuElement(14).getWidth() + CFG.PADDING;
+                } catch (NullPointerException var2) {
+                   return 0;
+                }
+             }
 
-            @Override
-            public Color getColor(boolean isActive) {
-               return CFG.COLOR_INGAME_DIPLOMACY_POINTS;
-            }
+             @Override
+             public int getWidth() {
+                int w = 0;
+                if (CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).isAtWar()) {
+                   w += ImageManager.getImage(Images.diplo_war).getWidth() + CFG.PADDING;
+                   String tCap = "" + CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).getCapitulationPoints() + "%";
+                   CFG.glyphLayout.setText(CFG.fontMain, tCap);
+                   w += (int)CFG.glyphLayout.width + CFG.PADDING;
+                }
+                int tOur = AI_Assistant.getWarFaithImageID();
+                if (tOur >= 0) {
+                   w += ImageManager.getImage(tOur).getWidth() + CFG.PADDING;
+                }
+                String tOurF = "" + (int)(AI_Assistant.getFaith(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()) * 100.0F) + "%";
+                CFG.glyphLayout.setText(CFG.fontMain, tOurF);
+                w += (int)CFG.glyphLayout.width + CFG.PADDING;
+                int tEnemy = this.getEnemyCivID();
+                if (CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).isAtWar() && tEnemy >= 0) {
+                   int tEImg = AI_Assistant.getWarFaithEnemyImageID();
+                   if (tEImg >= 0) {
+                      w += ImageManager.getImage(tEImg).getWidth() + CFG.PADDING;
+                   }
+                   String tEF = "" + (int)(AI_Assistant.getFaith(tEnemy) * 100.0F) + "%";
+                   CFG.glyphLayout.setText(CFG.fontMain, tEF);
+                   w += (int)CFG.glyphLayout.width;
+                }
+                return w;
+             }
 
-            @Override
-            public void buildElementHover() {
-               ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
-               ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
-               nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("TheSurrenderOfThisCountry") + ": ", CFG.COLOR_INGAME_MOVEMENT_ACTIVE));
-               nData.add(
-                  new MenuElement_Hover_v2_Element_Type_Text(
-                     " " + CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).getCapitulationPoints() + "%", CFG.COLOR_INGAME_DIPLOMACY_POINTS
-                  )
-               );
-               nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.diplo_war, CFG.PADDING, 0));
-               nElements.add(new MenuElement_Hover_v2_Element2(nData));
-               nData.clear();
-               this.menuElementHover = new MenuElement_Hover_v2(nElements);
-            }
+             @Override
+             public Color getColor(boolean isActive) {
+                return CFG.COLOR_INGAME_DIPLOMACY_POINTS;
+             }
 
-            @Override
-            public int getSFX() {
-               return CFG.viewsManager.getActiveViewID() == ViewsManager.VIEW_DIPLOMACY_MODE ? super.getSFX() : SoundsManager.SOUND_DIPLOMACY;
-            }
+             @Override
+             public void buildElementHover() {
+                ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
+                ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
+                int tPlayer = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
+                nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("TheSurrenderOfThisCountry") + ": ", CFG.COLOR_INGAME_MOVEMENT_ACTIVE));
+                nData.add(new MenuElement_Hover_v2_Element_Type_Text(" " + CFG.game.getCiv(tPlayer).getCapitulationPoints() + "%", CFG.COLOR_INGAME_DIPLOMACY_POINTS));
+                nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.diplo_war, CFG.PADDING, 0));
+                nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                nData.clear();
+                nData.add(new MenuElement_Hover_v2_Element_Type_Text("Вера в войну: ", CFG.COLOR_INGAME_MOVEMENT_ACTIVE));
+                nData.add(new MenuElement_Hover_v2_Element_Type_Text(" " + (int)(AI_Assistant.getFaith(tPlayer) * 100.0F) + "%", CFG.COLOR_INGAME_DIPLOMACY_POINTS));
+                nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                nData.clear();
+                int tEnemy = this.getEnemyCivID();
+                if (CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).isAtWar() && tEnemy >= 0) {
+                   nData.add(new MenuElement_Hover_v2_Element_Type_Text("Вера в войну (враг): ", CFG.COLOR_INGAME_MOVEMENT_ACTIVE));
+                   nData.add(new MenuElement_Hover_v2_Element_Type_Text(" " + (int)(AI_Assistant.getFaith(tEnemy) * 100.0F) + "%", CFG.COLOR_INGAME_DIPLOMACY_POINTS));
+                   nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                   nData.clear();
+                }
+                this.menuElementHover = new MenuElement_Hover_v2(nElements);
+             }
 
-            @Override
-            public void drawMenuElementHover2(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
-               if (this.menuElementHover != null) {
-                  this.menuElementHover.drawAlwaysBelow(oSB, Touch.getMousePosX(), ImageManager.getImage(Images.top_left2).getHeight());
-               }
-            }
-         }
-      );
+             @Override
+             public int getSFX() {
+                return CFG.viewsManager.getActiveViewID() == ViewsManager.VIEW_DIPLOMACY_MODE ? super.getSFX() : SoundsManager.SOUND_DIPLOMACY;
+             }
+
+             @Override
+             public void drawMenuElementHover2(SpriteBatch oSB, int iTranslateX, int iTranslateY, boolean isActive) {
+                if (this.menuElementHover != null) {
+                   this.menuElementHover.drawAlwaysBelow(oSB, Touch.getMousePosX(), ImageManager.getImage(Images.top_left2).getHeight());
+                }
+             }
+          }
+       );
+
       this.setMenuElement(
          16,
          new Text("0", 0, 0, 0, ImageManager.getImage(Images.top_left2).getHeight()) {
@@ -1158,14 +1267,14 @@ public class Menu_InGame extends SliderMenu {
                }
             }
 
-            @Override
-            public int getPosX() {
-               try {
-                  return CFG.menuManager.getInGame().getMenuElement(16).getPosX() + CFG.menuManager.getInGame().getMenuElement(16).getWidth() + CFG.PADDING;
-               } catch (NullPointerException var2) {
-                  return 0;
-               }
-            }
+             @Override
+             public int getPosX() {
+                try {
+                   return CFG.menuManager.getInGame().getMenuElement(16).getPosX() + CFG.menuManager.getInGame().getMenuElement(16).getWidth() + CFG.PADDING;
+                } catch (NullPointerException var2) {
+                   return 0;
+                }
+             }
 
             @Override
             public int getWidth() {

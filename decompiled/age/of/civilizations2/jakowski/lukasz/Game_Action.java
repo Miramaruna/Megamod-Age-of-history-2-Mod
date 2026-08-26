@@ -3203,7 +3203,9 @@ public class Game_Action {
                            .add((int)(CFG.game.getProvince(this.currentMoveUnits.getMoveUnits(0).getToProvinceID()).getArmy(0) * 0.03 * f1));
                      }
 
-                     CFG.soundsManager.playSound(CFG.soundsManager.playMoveArmy());
+                     if (this.currentMoveUnits.getMoveUnitsSize() > 0 && !this.currentMoveUnits.getMoveUnits(0).isAssistantOrder) {
+                        CFG.soundsManager.playSound(CFG.soundsManager.playMoveArmy());
+                     }
                   }
 
                   CFG.game
@@ -5988,12 +5990,15 @@ public class Game_Action {
                         )
                   )
             );
-      }
+       }
 
-      return nOut;
-   }
+       // faith in victory debuff: 100% faith -> full recruits, 0% faith -> 50% power
+       float tFaith = AI_Assistant.getFaith(nCivID);
+       nOut = (int)(nOut * (0.5F + 0.5F * tFaith));
+       return nOut;
+    }
 
-   public final void updateRecruitSlider() {
+    public final void updateRecruitSlider() {
       try {
          int tMaxRecruit = 0;
          tMaxRecruit = (int)CFG.game.getCiv(CFG.game.getProvince(CFG.game.getActiveProvinceID()).getCivID()).getMoney()

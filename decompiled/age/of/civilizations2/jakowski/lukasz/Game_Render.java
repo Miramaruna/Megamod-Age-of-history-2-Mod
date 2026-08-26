@@ -82,6 +82,7 @@ public class Game_Render {
    public static final void draw(SpriteBatch oSB) {
       CFG.map.drawMap(oSB);
       oRenderer.draw(oSB);
+
       if (CFG.map.getMapScale().getCurrentScale() < CIV_NAMES_START_DRAWING_NAMES_MAP_SCALE) {
          oRenderer_CivRegionNames.update();
          oRenderer_CivRegionNames.draw(oSB);
@@ -576,9 +577,7 @@ public class Game_Render {
                                           CFG.game.drawCities_OnlyCapitals_Images(oSB, CFG.map.getMapScale().getCurrentScale());
                                        }
 
-                                       if (AI_Assistant.PARTISAN_MAP_ON) {
-                                          CFG.game.drawProvinces_Partisans(oSB, CFG.map.getMapScale().getCurrentScale());
-                                       }
+
                                     }
 
                                     @Override

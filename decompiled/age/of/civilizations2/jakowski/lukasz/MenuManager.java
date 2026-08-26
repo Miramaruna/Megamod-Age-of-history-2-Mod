@@ -11063,16 +11063,25 @@ public class MenuManager {
    }
 
    public final void setVisible_CreateNewGame_Options_Scenarios(boolean visible) {
+      if (this.CREATE_NEW_GAME == -1) {
+         return;
+      }
       this.menus.get(this.CREATE_NEW_GAME).get(this.CREATE_NEW_GAME_OPTIONS).setVisible(!visible);
       this.menus.get(this.CREATE_NEW_GAME).get(this.CREATE_NEW_GAME_SCENARIOS).setVisible(visible);
    }
 
    public final void setVisible_CreateNewGame_Options_Pallets(boolean visible) {
+      if (this.CREATE_NEW_GAME == -1) {
+         return;
+      }
       this.menus.get(this.CREATE_NEW_GAME).get(this.CREATE_NEW_GAME_OPTIONS).setVisible(!visible);
       this.menus.get(this.CREATE_NEW_GAME).get(this.CREATE_NEW_GAME_PALLETS).setVisible(visible);
    }
 
    public final void setVisible_CreateNewGame_Options(boolean visible) {
+      if (this.CREATE_NEW_GAME == -1) {
+         return;
+      }
       this.menus.get(this.CREATE_NEW_GAME).get(this.CREATE_NEW_GAME_OPTIONS).setVisible(visible);
       this.menus.get(this.CREATE_NEW_GAME).get(this.CREATE_NEW_GAME_PALLETS).setVisible(false);
       this.menus.get(this.CREATE_NEW_GAME).get(this.CREATE_NEW_GAME_SCENARIOS).setVisible(false);

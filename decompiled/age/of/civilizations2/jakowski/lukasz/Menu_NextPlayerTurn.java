@@ -416,8 +416,20 @@ public class Menu_NextPlayerTurn extends SliderMenu {
          CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).getMigrate(i).getMoveUnitsLine().updateMoveTime();
       }
 
-      if (!CFG.SPECTATOR_MODE && CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).getMoveUnitsSize() > 0) {
-         CFG.soundsManager.playSound(SoundsManager.SOUND_MOVE_ARMY);
+      if (!CFG.SPECTATOR_MODE) {
+         boolean tHasManualMove = false;
+         Civilization tPlayerCiv = CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID());
+
+         for (int i = 0; i < tPlayerCiv.getMoveUnitsSize(); i++) {
+            if (!tPlayerCiv.getMoveUnits(i).isAssistantOrder) {
+               tHasManualMove = true;
+               break;
+            }
+         }
+
+         if (tHasManualMove) {
+            CFG.soundsManager.playSound(SoundsManager.SOUND_MOVE_ARMY);
+         }
       }
 
       for (int j = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID() - 1; j > 0; j--) {

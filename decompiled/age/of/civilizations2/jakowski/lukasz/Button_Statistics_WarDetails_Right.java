@@ -7,19 +7,20 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 
 public class Button_Statistics_WarDetails_Right extends Button_Statistics_WarDetails {
-   public Button_Statistics_WarDetails_Right(
-      int iCivID,
-      int iCivilianDeaths,
-      int iEconomicLosses,
-      int iParticipation,
-      int iProvinces,
-      int iProvincesTotal,
-      int iPosX,
-      int iPosY,
-      int iWidth,
-      boolean canPeaceOut
-   ) {
-      super(iCivID, iCivilianDeaths, iEconomicLosses, iParticipation, iProvinces, iProvincesTotal, iPosX, iPosY, iWidth, canPeaceOut);
+    public Button_Statistics_WarDetails_Right(
+       int iCivID,
+       int iCivilianDeaths,
+       int iEconomicLosses,
+       int iParticipation,
+       int iWarFaith,
+       int iProvinces,
+       int iProvincesTotal,
+       int iPosX,
+       int iPosY,
+       int iWidth,
+       boolean canPeaceOut
+    ) {
+       super(iCivID, iCivilianDeaths, iEconomicLosses, iParticipation, iWarFaith, iProvinces, iProvincesTotal, iPosX, iPosY, iWidth, canPeaceOut);
       CFG.glyphLayout.setText(CFG.fontMain, "" + this.sProvinces);
       this.iCivilianDeathsWidth = (int)(CFG.glyphLayout.width * 0.6F);
       CFG.glyphLayout.setText(CFG.fontMain, "" + iParticipation + "%");

@@ -3669,19 +3669,37 @@ public class Game {
       }
    }
 
+   private final void drawMarkerIcon(SpriteBatch oSB, float tCenterX, float tCenterY, int nImageID, float nScale) {
+      if (nImageID < 0) {
+         return;
+      }
+
+      Image tImg = ImageManager.getImage(nImageID);
+      int tW = (int)((float)tImg.getWidth() * nScale);
+      int tH = (int)((float)tImg.getHeight() * nScale);
+      tImg.draw(oSB, (int)(tCenterX - (float)tW / 2.0F), (int)(tCenterY - (float)tH / 2.0F), tW, tH);
+   }
+
    public final void drawProvinces_Partisans(SpriteBatch oSB, float nScale) {
+      if (AI_Assistant.PARTISAN_HOTSPOTS.isEmpty()) {
+         return;
+      }
+
+      float tScale = CFG.map.getMapScale().getCurrentScale();
+      int tImg = AI_Assistant.getPartisanImageID();
+
       for (int i = 0; i < CFG.NUM_OF_PROVINCES_IN_VIEW; i++) {
          int tProvID = this.getProvinceInViewID(i);
+
          if (AI_Assistant.PARTISAN_HOTSPOTS.contains(tProvID)) {
             Province tP = this.getProvince(tProvID);
-            oSB.setColor(new Color(1.0F, 0.15F, 0.15F, 0.9F));
-            ImageManager.getImage(Images.skull)
-               .draw(
-                  oSB,
-                  (int)((tP.getCenterX() + tP.getTranslateProvincePosX()) * nScale),
-                  (int)((tP.getCenterY() + CFG.map.getMapCoordinates().getPosY()) * nScale)
-               );
-            oSB.setColor(Color.WHITE);
+            int tCenterX = (int)(
+               (tP.getCenterX() + tP.getShiftX() + tP.getTranslateProvincePosX()) * tScale
+            );
+            int tCenterY = (int)(
+               (tP.getCenterY() + tP.getShiftY() + CFG.map.getMapCoordinates().getPosY()) * tScale
+            );
+            this.drawMarkerIcon(oSB, (float)tCenterX, (float)tCenterY, tImg, tScale);
          }
       }
    }
@@ -3716,6 +3734,11 @@ public class Game {
 
       this.drawSeaProvinceArmy(oSB, nScale);
       this.drawMoveUnitsArmy(oSB, nScale);
+      try {
+         this.drawProvinces_Partisans(oSB, nScale);
+      } catch (Exception varWM) {
+         com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS ERROR: " + varWM.getMessage());
+      }
       oSB.setColor(Color.WHITE);
    }
 

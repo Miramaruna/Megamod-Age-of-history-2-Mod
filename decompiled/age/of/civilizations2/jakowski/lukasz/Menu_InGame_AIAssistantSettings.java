@@ -17,71 +17,71 @@ public class Menu_InGame_AIAssistantSettings extends SliderMenu {
          "AI_Set_DiplomacyResponse",
          "AI_Set_DiplomacyActions"
       };
-      int tW2 = (tempWidth - CFG.PADDING * 6) / 2;
+      int playerCivID = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
+      int[] tImages = new int[]{Images.diplo_war, Images.defensive_position, Images.act_plunder};
+      boolean tRow = false;
 
       for (int i = 0; i < tKeys.length; i++) {
          final int tIndex = i;
+         boolean tOn = aiGetFlag(tIndex);
+         ArrayList<Integer> nValues = new ArrayList<>();
+         ArrayList<Integer> nCivs = new ArrayList<>();
+         if (tOn) {
+            nValues.add(1);
+            nCivs.add(playerCivID);
+            nValues.add(0);
+            nCivs.add(0);
+         } else {
+            nValues.add(0);
+            nCivs.add(playerCivID);
+            nValues.add(1);
+            nCivs.add(0);
+         }
          menuElements.add(
-            new Button_FlagActionSliderStyle(CFG.langManager.get(tKeys[i]), -1, 2 + CFG.PADDING, tY, tempWidth - CFG.PADDING * 4, false) {
+            new Graph_Circle_UpgradingArmy(
+               false,
+               tImages[i % tImages.length],
+               tRow,
+               CFG.langManager.get(tKeys[i]),
+               CFG.COLOR_INGAME_DIPLOMACY_POINTS,
+               2 + CFG.PADDING,
+               tY,
+               nValues,
+               nCivs,
+               playerCivID,
+               CFG.langManager.get(tOn ? "AI_Set_On" : "AI_Set_Off"),
+               "",
+               ""
+            ) {
                @Override
-               public Color getColor(boolean isActive) {
-                  return CFG.COLOR_INGAME_DIPLOMACY_POINTS;
+               public int getWidth() {
+                  return tempWidth - CFG.PADDING * 4;
+               }
+
+               @Override
+               public void buildElementHover() {
+                  ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
+                  ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("AI_Settings_Info")));
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get(tKeys[tIndex])));
+                  nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                  this.menuElementHover = new MenuElement_Hover_v2(nElements);
+               }
+
+               @Override
+               public void actionElement(int iID) {
+                  aiSetFlag(tIndex, !aiGetFlag(tIndex));
+                  CFG.toast.setInView(
+                     CFG.langManager.get(tKeys[tIndex]) + ": " + CFG.langManager.get(aiGetFlag(tIndex) ? "AI_Set_On" : "AI_Set_Off"),
+                     aiGetFlag(tIndex) ? CFG.COLOR_TEXT_MODIFIER_POSITIVE : CFG.COLOR_TEXT_MODIFIER_NEGATIVE2
+                  );
+                  CFG.toast.setTimeInView(2500);
+                  CFG.menuManager.rebuildInGame_AIAssistantSettings();
                }
             }
          );
-         tY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING / 2;
-
-         for (int j = 0; j < 2; j++) {
-            final int tSlot = j;
-            final int tPosXFinal = CFG.PADDING * 2 + j * (tW2 + CFG.PADDING * 2);
-            menuElements.add(
-               new Button_EconomicPolitic(
-                  CFG.langManager.get(tSlot == 0 ? "AI_Set_On" : "AI_Set_Off"),
-                  -1,
-                  tPosXFinal,
-                  tY,
-                  tW2,
-                  true,
-                  tSlot
-               ) {
-                  @Override
-                  public Color getColor(boolean isActive) {
-                     boolean tAllowed = aiGetFlag(tIndex);
-                     boolean tActive = tSlot == 0 ? tAllowed : !tAllowed;
-                     return tActive
-                        ? (tSlot == 0 ? CFG.COLOR_TEXT_MODIFIER_POSITIVE : CFG.COLOR_TEXT_MODIFIER_NEGATIVE2)
-                        : (
-                           this.getIsHovered()
-                              ? CFG.COLOR_TEXT_CIV_INFO_HOVER
-                              : new Color(CFG.COLOR_TEXT_CIV_INFO.r, CFG.COLOR_TEXT_CIV_INFO.g, CFG.COLOR_TEXT_CIV_INFO.b, 0.65F)
-                        );
-                  }
-
-                  @Override
-                  public void buildElementHover() {
-                     ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
-                     ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
-                     nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("AI_Settings_Info")));
-                     nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get(tKeys[tIndex])));
-                     nElements.add(new MenuElement_Hover_v2_Element2(nData));
-                     this.menuElementHover = new MenuElement_Hover_v2(nElements);
-                  }
-
-                  @Override
-                  public void actionElement(int iIDX) {
-                     aiSetFlag(tIndex, tSlot == 0);
-                     CFG.toast.setInView(
-                        CFG.langManager.get(tKeys[tIndex]) + ": " + CFG.langManager.get(tSlot == 0 ? "AI_Set_On" : "AI_Set_Off"),
-                        tSlot == 0 ? CFG.COLOR_TEXT_MODIFIER_POSITIVE : CFG.COLOR_TEXT_MODIFIER_NEGATIVE2
-                     );
-                     CFG.toast.setTimeInView(2500);
-                     CFG.menuManager.rebuildInGame_AIAssistantSettings();
-                  }
-               }
-            );
-         }
-
-         tY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING * 3 / 2;
+         tY += menuElements.get(menuElements.size() - 1).getHeight() + CFG.PADDING;
+         tRow = !tRow;
       }
 
       int tempMenuPosY = ImageManager.getImage(Images.top_left2).getHeight() + CFG.PADDING * 2 + CFG.BUTTON_HEIGHT * 3 / 5;

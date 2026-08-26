@@ -469,9 +469,10 @@ public class AI_Style {
                int tCivID = tSorted.get(tBest);
                float tRel = CFG.game.getCivRelation_OfCivB(tPlayer, tCivID);
                if (tRel < 100.0F && CFG.game.getCivTruce(tPlayer, tCivID) <= 0) {
-                  float tNewRel = Math.min(100.0F, tRel + 5.0F);
+                  float tGain = (float)CFG.oR.nextInt(4);
+                  float tNewRel = Math.min(100.0F, tRel + tGain);
                   CFG.game.setCivRelation_OfCivB(tPlayer, tCivID, tNewRel);
-                  CFG.game.setCivRelation_OfCivB(tCivID, tPlayer, Math.min(100.0F, CFG.game.getCivRelation_OfCivB(tCivID, tPlayer) + 5.0F));
+                  CFG.game.setCivRelation_OfCivB(tCivID, tPlayer, Math.min(100.0F, CFG.game.getCivRelation_OfCivB(tCivID, tPlayer) + tGain));
                   tImproved++;
                }
 
@@ -6854,9 +6855,11 @@ public class AI_Style {
          for (int tB = 0; tB < tMaxBuilds; tB++) {
          List<AI_Build> buildingsScore = new ArrayList<>();
          List<AI_Build_Option> buildingsOptions = new ArrayList<>();
+         List<AI_Build_Option> portOptions = new ArrayList<>();
 
-            try {
-               buildingsOptions.clear();
+         try {
+            buildingsOptions.clear();
+            portOptions.clear();
 
                if (CFG.game.getCiv(nCivID).getTechnologyLevel() >= BuildingsManager.getFarm_TechLevel(1)
                && CFG.game.getCiv(nCivID).iNumOf_Farms_ProvincesPossibleToBuild * BuildingsManager.getWorkshop_MaxLevel_CanBuild(nCivID)
@@ -6879,7 +6882,7 @@ public class AI_Style {
             if (CFG.game.getCiv(nCivID).getSeaAccess() > 0
                && CFG.game.getCiv(nCivID).getTechnologyLevel() >= BuildingsManager.getPort_TechLevel(1)
                && CFG.game.getCiv(nCivID).getNumOfProvinces() > CFG.game.getCiv(nCivID).iNumOf_Ports) {
-               buildingsOptions.add(new AI_Build_Option_Port());
+               portOptions.add(new AI_Build_Option_Port());
             }
 
             if (CFG.game.getCiv(nCivID).getTechnologyLevel() >= BuildingsManager.getArmoury_TechLevel(1)
@@ -6927,8 +6930,6 @@ public class AI_Style {
                buildingsOptions.sort((a, b) -> Float.compare(b.getScore(nCivID), a.getScore(nCivID)));
 
                for (AI_Build_Option tOpt : buildingsOptions) {
-                  if (tOpt instanceof AI_Build_Option_Port) continue;
-
                   AI_Build tBuild = tOpt.getData(nCivID);
 
                   if (tBuild.build(nCivID, 0, false)) {
@@ -6936,10 +6937,19 @@ public class AI_Style {
                      break;
                   }
                }
+            }
 
-               AI_Build_Option_Port tPortOpt = new AI_Build_Option_Port();
-               AI_Build tPortBuild = tPortOpt.getData(nCivID);
-               tPortBuild.build(nCivID, 0, false);
+            if (portOptions.size() > 0) {
+               portOptions.sort((a, b) -> Float.compare(b.getScore(nCivID), a.getScore(nCivID)));
+
+               for (AI_Build_Option tPortOpt : portOptions) {
+                  AI_Build tPortBuild = tPortOpt.getData(nCivID);
+
+                  if (tPortBuild.build(nCivID, 0, false)) {
+                     CFG.game.getCiv(nCivID).buildCivPersonality_Buildings();
+                     break;
+                  }
+               }
             }
          } catch (IndexOutOfBoundsException var6) {
             CFG.exceptionStack(var6);

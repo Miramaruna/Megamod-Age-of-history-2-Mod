@@ -215,12 +215,13 @@ public class Menu_InGame_WarDetails extends SliderMenu {
             }
          );
          menuElements.add(
-            new Button_Statistics_WarDetails(
-               CFG.game.getWar(WAR_ID).getAggressorID(i3).getCivID(),
-               CFG.game.getWar(WAR_ID).getAggressorID(i3).getCivilianDeaths(),
-               CFG.game.getWar(WAR_ID).getAggressorID(i3).getEconomicLosses(),
-               CFG.game.getCiv(CFG.game.getWar(WAR_ID).getAggressorID(i3).getCivID()).getCapitulationPoints(),
-               CFG.game.getWar(WAR_ID).getProvinces_Aggressor_OwnTotal(i3),
+             new Button_Statistics_WarDetails(
+                CFG.game.getWar(WAR_ID).getAggressorID(i3).getCivID(),
+                CFG.game.getWar(WAR_ID).getAggressorID(i3).getCivilianDeaths(),
+                CFG.game.getWar(WAR_ID).getAggressorID(i3).getEconomicLosses(),
+                CFG.game.getCiv(CFG.game.getWar(WAR_ID).getAggressorID(i3).getCivID()).getCapitulationPoints(),
+                (int)(AI_Assistant.getFaith(CFG.game.getWar(WAR_ID).getAggressorID(i3).getCivID()) * 100.0F),
+                CFG.game.getWar(WAR_ID).getProvinces_Aggressor_OwnTotal(i3),
                CFG.game.getWar(WAR_ID).getProvinces_Aggressor_Own(i3),
                2,
                tY,
@@ -258,12 +259,13 @@ public class Menu_InGame_WarDetails extends SliderMenu {
             }
          );
          menuElements.add(
-            new Button_Statistics_WarDetails_Right(
-               CFG.game.getWar(WAR_ID).getDefenderID(var23).getCivID(),
-               CFG.game.getWar(WAR_ID).getDefenderID(var23).getCivilianDeaths(),
-               CFG.game.getWar(WAR_ID).getDefenderID(var23).getEconomicLosses(),
-               CFG.game.getCiv(CFG.game.getWar(WAR_ID).getDefenderID(var23).getCivID()).getCapitulationPoints(),
-               CFG.game.getWar(WAR_ID).getProvinces_Defender_OwnTotal(var23),
+             new Button_Statistics_WarDetails_Right(
+                CFG.game.getWar(WAR_ID).getDefenderID(var23).getCivID(),
+                CFG.game.getWar(WAR_ID).getDefenderID(var23).getCivilianDeaths(),
+                CFG.game.getWar(WAR_ID).getDefenderID(var23).getEconomicLosses(),
+                CFG.game.getCiv(CFG.game.getWar(WAR_ID).getDefenderID(var23).getCivID()).getCapitulationPoints(),
+                (int)(AI_Assistant.getFaith(CFG.game.getWar(WAR_ID).getDefenderID(var23).getCivID()) * 100.0F),
+                CFG.game.getWar(WAR_ID).getProvinces_Defender_OwnTotal(var23),
                CFG.game.getWar(WAR_ID).getProvinces_Defender_Own(var23),
                CFG.PADDING * 2,
                tY,

@@ -191,8 +191,8 @@ public class Menu_InGame_ActionArmy extends SliderMenu {
          if (AI_Assistant.ENABLED) {
             menuElements.add(
                new Button_ActionArmy(
-                  CFG.langManager.get("ArmyPriority"),
-                  Images.act_moveto,
+                   CFG.langManager.get("ArmyPriority"),
+                   AI_Assistant.getPriorityCountryImageID(),
                   0,
                   12,
                   0,
@@ -241,8 +241,8 @@ public class Menu_InGame_ActionArmy extends SliderMenu {
          {
             menuElements.add(
                new Button_ActionArmy(
-                  CFG.langManager.get("FortStrip") + (AI_Assistant.FORT_STRIP_PROVINCES.isEmpty() ? "" : ": " + AI_Assistant.FORT_STRIP_PROVINCES.size()),
-                  Images.act_moveto,
+                   CFG.langManager.get("FortStrip") + (AI_Assistant.FORT_STRIP_PROVINCES.isEmpty() ? "" : ": " + AI_Assistant.FORT_STRIP_PROVINCES.size()),
+                   AI_Assistant.getFortLineImageID(),
                   0,
                   12,
                   0,
@@ -291,8 +291,8 @@ public class Menu_InGame_ActionArmy extends SliderMenu {
 
             menuElements.add(
                new Button_ActionArmy(
-                  CFG.langManager.get("Garrison") + (AI_Assistant.GARRISON_PROVINCES.isEmpty() ? "" : ": " + AI_Assistant.GARRISON_PROVINCES.size()),
-                  Images.act_moveto,
+                   CFG.langManager.get("Garrison") + (AI_Assistant.GARRISON_PROVINCES.isEmpty() ? "" : ": " + AI_Assistant.GARRISON_PROVINCES.size()),
+                   AI_Assistant.getGarrisonLineImageID(),
                   0,
                   12,
                   0,

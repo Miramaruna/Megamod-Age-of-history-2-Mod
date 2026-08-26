@@ -483,10 +483,15 @@ public class Civilization {
       this.lDefensivePact.add(0);
    }
 
-   public final void newMove(int fromProvinceID, int toProvinceID, int nNumOfUnits, boolean buildLine) {
-      this.lMoveUnits.add(new Move_Units(fromProvinceID, toProvinceID, nNumOfUnits, buildLine));
-      this.iMoveUnitsSize = this.lMoveUnits.size();
-   }
+    public final void newMove(int fromProvinceID, int toProvinceID, int nNumOfUnits, boolean buildLine) {
+       Move_Units tMove = new Move_Units(fromProvinceID, toProvinceID, nNumOfUnits, buildLine);
+       if (AI_Assistant.IS_ISSUING_ORDERS) {
+          tMove.isAssistantOrder = true;
+       }
+
+       this.lMoveUnits.add(tMove);
+       this.iMoveUnitsSize = this.lMoveUnits.size();
+    }
 
    public final void removeMove(int i) {
       this.lMoveUnits.remove(i);
