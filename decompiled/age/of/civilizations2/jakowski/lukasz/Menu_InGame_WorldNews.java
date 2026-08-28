@@ -86,7 +86,10 @@ public class Menu_InGame_WorldNews extends SliderMenu {
       int tX = this.getPosX() + this.getWidth() / 2 - tIconSize / 2;
       int tY = this.getPosY() - CFG.PADDING - tIconSize;
       oSB.setColor(new Color(1.0F, 0.85F, 0.4F, 0.9F));
-      ImageManager.getImage(tPicID).draw(oSB, tX, tY, tIconSize, tIconSize);
+      Image tPic = ImageManager.getImage(tPicID);
+      if (tPic != null && tPic.texture != null) {
+         tPic.draw(oSB, tX, tY, tIconSize, tIconSize);
+      }
       oSB.setColor(Color.WHITE);
 
       super.draw(oSB, iTranslateX, iTranslateY, sliderMenuIsActive);

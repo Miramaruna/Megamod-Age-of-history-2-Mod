@@ -3704,6 +3704,62 @@ public class Game {
       }
    }
 
+   public final void drawFrontLineMarkers(SpriteBatch oSB, float nScale) {
+      if (!AI_Assistant.FRONTLINE_ON) {
+         return;
+      }
+
+      int tPlayerCiv = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
+      float tPulse = 0.5F + 0.5F * (float)Math.sin((double)System.currentTimeMillis() / 220.0);
+      float tAlpha = 0.4F + 0.55F * tPulse;
+      Image tImg = ImageManager.getImage(Images.pix255_255_255);
+      int tImgH = tImg.getHeight();
+      float tMapPosY = CFG.map.getMapCoordinates().getPosY();
+      float tThickness = tImgH * CFG.settingsManager.BORDER_HEIGHT * CFG.PROVINCE_BORDER_THICKNESS * nScale;
+
+      for (int i = 0; i < CFG.NUM_OF_PROVINCES_IN_VIEW; i++) {
+         int tProvID = this.getProvinceInViewID(i);
+         Province tP = this.getProvince(tProvID);
+         int tPCiv = tP.getCivID();
+         if (tPCiv <= 0) {
+            continue;
+         }
+
+         List<Province_Border> tBorders = tP.getProvinceBordersLandByLand();
+         if (tBorders == null) {
+            continue;
+         }
+
+         int tTx = tP.getTranslateProvincePosX();
+
+         for (int b = 0; b < tBorders.size(); b++) {
+            Province_Border tB = tBorders.get(b);
+            int tOtherCiv = CFG.game.getProvince(tB.getWithProvinceID()).getCivID();
+            if (tOtherCiv <= 0) {
+               continue;
+            }
+
+            boolean tIsFront = (tPCiv == tPlayerCiv && tOtherCiv != tPlayerCiv && CFG.game.getCivsAtWar(tPlayerCiv, tOtherCiv))
+               || (tOtherCiv == tPlayerCiv && tPCiv != tPlayerCiv && CFG.game.getCivsAtWar(tPlayerCiv, tPCiv));
+            if (!tIsFront) {
+               continue;
+            }
+
+            oSB.setColor(1.0F, 0.12F, 0.12F, tAlpha);
+
+            for (int s = 0; s < tB.iProvinceBorderLineSize; s++) {
+               Province_Border_Line tSeg = tB.provinceBorderLine.get(s);
+               int tX = (int)((tTx + tSeg.getPosX()) * nScale);
+               int tY = (int)((tMapPosY + tSeg.getPosY()) * nScale);
+               int tW = (int)((float)tSeg.getWidth() * CFG.settingsManager.BORDER_WIDTH * nScale);
+               tImg.draw(oSB, tX, tY - (int)(tImgH * nScale), tW, (int)tThickness, tSeg.getAngle());
+            }
+         }
+      }
+
+      oSB.setColor(Color.WHITE);
+   }
+
    public final void drawProvinces_Ports_Build(SpriteBatch oSB, float nScale) {
       for (int i = 0; i < CFG.NUM_OF_PROVINCES_IN_VIEW; i++) {
          if (this.getProvince(this.getProvinceInViewID(i)).getLevelOfPort() > 0) {
@@ -3738,6 +3794,12 @@ public class Game {
          this.drawProvinces_Partisans(oSB, nScale);
       } catch (Exception varWM) {
          com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS ERROR: " + varWM.getMessage());
+      }
+
+      try {
+         this.drawFrontLineMarkers(oSB, nScale);
+      } catch (Exception varFL) {
+         com.badlogic.gdx.Gdx.app.log("AoC", "FRONTLINE ERROR: " + varFL.getMessage());
       }
       oSB.setColor(Color.WHITE);
    }

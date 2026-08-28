@@ -161,4 +161,5 @@ public class AI_Assistant {
       }
      public static boolean PARTISAN_MAP_ON = false;
    public static boolean IS_ISSUING_ORDERS = false;
+   public static boolean FRONTLINE_ON = true;
 }
