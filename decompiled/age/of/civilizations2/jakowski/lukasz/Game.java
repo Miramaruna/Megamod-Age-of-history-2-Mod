@@ -3704,60 +3704,33 @@ public class Game {
       }
    }
 
-   public final void drawFrontLineMarkers(SpriteBatch oSB, float nScale) {
-      if (!AI_Assistant.FRONTLINE_ON) {
-         return;
-      }
+    public final void drawFrontLineMarkers(SpriteBatch oSB, float nScale) {
+    }
 
-      int tPlayerCiv = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
-      float tPulse = 0.5F + 0.5F * (float)Math.sin((double)System.currentTimeMillis() / 220.0);
-      float tAlpha = 0.4F + 0.55F * tPulse;
-      Image tImg = ImageManager.getImage(Images.pix255_255_255);
-      int tImgH = tImg.getHeight();
-      float tMapPosY = CFG.map.getMapCoordinates().getPosY();
-      float tThickness = tImgH * CFG.settingsManager.BORDER_HEIGHT * CFG.PROVINCE_BORDER_THICKNESS * nScale;
+    public final void drawProvinces_RiskUprising(SpriteBatch oSB, float nScale) {
+       if (!AI_Assistant.RISK_UPRISING_ON) {
+          return;
+       }
+
+       float tScale = CFG.map.getMapScale().getCurrentScale();
+       int tImg = AI_Assistant.getRiskUprisingImageID();
+       if (tImg < 0) {
+          return;
+       }
 
       for (int i = 0; i < CFG.NUM_OF_PROVINCES_IN_VIEW; i++) {
          int tProvID = this.getProvinceInViewID(i);
          Province tP = this.getProvince(tProvID);
-         int tPCiv = tP.getCivID();
-         if (tPCiv <= 0) {
-            continue;
-         }
-
-         List<Province_Border> tBorders = tP.getProvinceBordersLandByLand();
-         if (tBorders == null) {
-            continue;
-         }
-
-         int tTx = tP.getTranslateProvincePosX();
-
-         for (int b = 0; b < tBorders.size(); b++) {
-            Province_Border tB = tBorders.get(b);
-            int tOtherCiv = CFG.game.getProvince(tB.getWithProvinceID()).getCivID();
-            if (tOtherCiv <= 0) {
-               continue;
-            }
-
-            boolean tIsFront = (tPCiv == tPlayerCiv && tOtherCiv != tPlayerCiv && CFG.game.getCivsAtWar(tPlayerCiv, tOtherCiv))
-               || (tOtherCiv == tPlayerCiv && tPCiv != tPlayerCiv && CFG.game.getCivsAtWar(tPlayerCiv, tPCiv));
-            if (!tIsFront) {
-               continue;
-            }
-
-            oSB.setColor(1.0F, 0.12F, 0.12F, tAlpha);
-
-            for (int s = 0; s < tB.iProvinceBorderLineSize; s++) {
-               Province_Border_Line tSeg = tB.provinceBorderLine.get(s);
-               int tX = (int)((tTx + tSeg.getPosX()) * nScale);
-               int tY = (int)((tMapPosY + tSeg.getPosY()) * nScale);
-               int tW = (int)((float)tSeg.getWidth() * CFG.settingsManager.BORDER_WIDTH * nScale);
-               tImg.draw(oSB, tX, tY - (int)(tImgH * nScale), tW, (int)tThickness, tSeg.getAngle());
-            }
-         }
+          if (tP.getRevolutionaryRisk() > 0.8F) {
+             int tCenterX = (int)(
+                (tP.getCenterX() + tP.getShiftX() + tP.getTranslateProvincePosX()) * tScale
+             );
+             int tCenterY = (int)(
+                (tP.getCenterY() + tP.getShiftY() + CFG.map.getMapCoordinates().getPosY()) * tScale
+             );
+             this.drawMarkerIcon(oSB, (float)tCenterX, (float)tCenterY, tImg, tScale * 0.6F);
+          }
       }
-
-      oSB.setColor(Color.WHITE);
    }
 
    public final void drawProvinces_Ports_Build(SpriteBatch oSB, float nScale) {
@@ -3801,6 +3774,13 @@ public class Game {
       } catch (Exception varFL) {
          com.badlogic.gdx.Gdx.app.log("AoC", "FRONTLINE ERROR: " + varFL.getMessage());
       }
+
+      try {
+         this.drawProvinces_RiskUprising(oSB, nScale);
+      } catch (Exception varRU) {
+         com.badlogic.gdx.Gdx.app.log("AoC", "RISK UPRISING ERROR: " + varRU.getMessage());
+      }
+
       oSB.setColor(Color.WHITE);
    }
 

@@ -7304,11 +7304,6 @@ public class ViewsManager {
 
             @Override
             public void updateActiveProvinceID_ExtraAction(int oldProvince, int newProvince) {
-               if (CFG.menuManager.getInGameView()
-                  && CFG.menuManager.getVisible_InGame_View_Stats()
-                  && CFG.getActiveCivInfo_BasedOnActiveProvinceID(oldProvince) != CFG.getActiveCivInfo_BasedOnActiveProvinceID(newProvince)) {
-                  CFG.menuManager.setVisible_InGame_View_Buildings(true);
-               }
             }
          },
          CFG.FOG_OF_WAR == 2 ? new Game_Render.Renderer() {

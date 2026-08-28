@@ -865,15 +865,38 @@ public class Province {
       }
    }
 
-   public final void drawProvinceBorder(SpriteBatch oSB) {
-      for (int i = 0; i < this.iProvinceBordersLandByLandSize; i++) {
-         this.lProvinceBordersLandByLand.get(i).drawProvince_Border.draw(oSB, this.iTranslateProvincePosX);
-      }
+    public final void drawProvinceBorder(SpriteBatch oSB) {
+       for (int i = 0; i < this.iProvinceBordersLandByLandSize; i++) {
+          this.lProvinceBordersLandByLand.get(i).drawProvince_Border.draw(oSB, this.iTranslateProvincePosX);
+       }
 
-      for (int var3 = 0; var3 < this.iProvinceBordersSeaBySeaSize; var3++) {
-         this.lProvinceBordersSeaBySea.get(var3).drawProvince_Border.draw(oSB, this.iTranslateProvincePosX);
-      }
-   }
+       for (int var3 = 0; var3 < this.iProvinceBordersSeaBySeaSize; var3++) {
+          this.lProvinceBordersSeaBySea.get(var3).drawProvince_Border.draw(oSB, this.iTranslateProvincePosX);
+       }
+
+       if (age.of.civilizations2.jakowski.lukasz.AI_Assistant.FRONTLINE_ON) {
+          int tPCiv = this.getCivID();
+          int tPlayerCiv = CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID();
+          if (tPCiv > 0) {
+             float tPulse = 0.5F + 0.5F * (float)Math.sin((double)System.currentTimeMillis() / 220.0);
+             float tAlpha = 0.4F + 0.55F * tPulse;
+             com.badlogic.gdx.graphics.Color tPrev = oSB.getColor();
+             oSB.setColor(1.0F, 0.12F, 0.12F, tAlpha);
+
+             for (int i = 0; i < this.iProvinceBordersLandByLandSize; i++) {
+                age.of.civilizations2.jakowski.lukasz.Province_Border tB = this.lProvinceBordersLandByLand.get(i);
+                int tOtherCiv = CFG.game.getProvince(tB.getWithProvinceID()).getCivID();
+                boolean tDraw = (tPCiv == tPlayerCiv && tOtherCiv > 0 && tOtherCiv != tPlayerCiv && CFG.game.getCivsAtWar(tPlayerCiv, tOtherCiv))
+                   || (tOtherCiv == tPlayerCiv && tPCiv != tPlayerCiv && CFG.game.getCivsAtWar(tPlayerCiv, tPCiv));
+                if (tDraw) {
+                   tB.drawStraightBorder(oSB, this.iTranslateProvincePosX);
+                }
+             }
+
+             oSB.setColor(tPrev);
+          }
+       }
+    }
 
    public final void drawProvinceBorder_OnlyCivilizationBorder(SpriteBatch oSB) {
       for (int i = 0; i < this.iProvinceBordersLandByLandSize; i++) {

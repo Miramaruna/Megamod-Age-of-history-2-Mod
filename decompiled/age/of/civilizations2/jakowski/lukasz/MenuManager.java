@@ -110,6 +110,11 @@ public class MenuManager {
    public int INGAME_PEACE_TREATY_RESPONSE_PROVINCES = -1;
    public int INGAME_PEACE_TREATY_RESPONSE_PROVINCES_SHOW = -1;
    public int INGAME_PEACE_TREATY_RESPONSE_CIVS = -1;
+   public int INGAME_SPY = -1;
+   public int INGAME_STAGE_A_COUP = -1;
+   public int INGAME_DEVALUATION = -1;
+   public int INGAME_MOBILIZATION = -1;
+   public int INGAME_REC = -1;
    public int INGAME_CREATE_VASSAL = -1;
    public int INGAME_CREATE_VASSAL_INFO = -1;
    public int INGAME_CREATE_VASSAL_INFO_STATS = -1;
@@ -12472,6 +12477,66 @@ public class MenuManager {
       this.menus.get(this.INGAME).get(this.INGAME_SEND_MESSAGE).setVisible(true);
       this.setOrderOfMenu(this.INGAME_SEND_MESSAGE);
       this.menus.get(this.INGAME).get(this.INGAME_SEND_MESSAGE).updateMenuElements_IsInView();
+   }
+
+   public final void rebuildInGame_SendSpy(int onCivID) {
+      if (this.INGAME_SPY == -1) {
+         this.INGAME_SPY = this.addNextMenuToView(this.INGAME, new Menu_InGame_Spy(onCivID));
+      } else {
+         this.menus.get(this.INGAME).set(this.INGAME_SPY, new Menu_InGame_Spy(onCivID));
+      }
+
+      this.menus.get(this.INGAME).get(this.INGAME_SPY).setVisible(true);
+      this.setOrderOfMenu(this.INGAME_SPY);
+      this.menus.get(this.INGAME).get(this.INGAME_SPY).updateMenuElements_IsInView();
+   }
+
+   public final void rebuildInGame_StageACoup(int onCivID) {
+      if (this.INGAME_STAGE_A_COUP == -1) {
+         this.INGAME_STAGE_A_COUP = this.addNextMenuToView(this.INGAME, new Menu_InGame_StageACoup(onCivID));
+      } else {
+         this.menus.get(this.INGAME).set(this.INGAME_STAGE_A_COUP, new Menu_InGame_StageACoup(onCivID));
+      }
+
+      this.menus.get(this.INGAME).get(this.INGAME_STAGE_A_COUP).setVisible(true);
+      this.setOrderOfMenu(this.INGAME_STAGE_A_COUP);
+      this.menus.get(this.INGAME).get(this.INGAME_STAGE_A_COUP).updateMenuElements_IsInView();
+   }
+
+   public final void rebuildInGame_Devaluation(int onCivID) {
+      if (this.INGAME_DEVALUATION == -1) {
+         this.INGAME_DEVALUATION = this.addNextMenuToView(this.INGAME, new Menu_InGame_Devaluation(onCivID));
+      } else {
+         this.menus.get(this.INGAME).set(this.INGAME_DEVALUATION, new Menu_InGame_Devaluation(onCivID));
+      }
+
+      this.menus.get(this.INGAME).get(this.INGAME_DEVALUATION).setVisible(true);
+      this.setOrderOfMenu(this.INGAME_DEVALUATION);
+      this.menus.get(this.INGAME).get(this.INGAME_DEVALUATION).updateMenuElements_IsInView();
+   }
+
+   public final void rebuildInGame_Mobilization(int onCivID) {
+      if (this.INGAME_MOBILIZATION == -1) {
+         this.INGAME_MOBILIZATION = this.addNextMenuToView(this.INGAME, new Menu_InGame_Mobilization(onCivID));
+      } else {
+         this.menus.get(this.INGAME).set(this.INGAME_MOBILIZATION, new Menu_InGame_Mobilization(onCivID));
+      }
+
+      this.menus.get(this.INGAME).get(this.INGAME_MOBILIZATION).setVisible(true);
+      this.setOrderOfMenu(this.INGAME_MOBILIZATION);
+      this.menus.get(this.INGAME).get(this.INGAME_MOBILIZATION).updateMenuElements_IsInView();
+   }
+
+   public final void rebuildInGame_Rec(int onCivID) {
+      if (this.INGAME_REC == -1) {
+         this.INGAME_REC = this.addNextMenuToView(this.INGAME, new Menu_InGame_Rec(onCivID));
+      } else {
+         this.menus.get(this.INGAME).set(this.INGAME_REC, new Menu_InGame_Rec(onCivID));
+      }
+
+      this.menus.get(this.INGAME).get(this.INGAME_REC).setVisible(true);
+      this.setOrderOfMenu(this.INGAME_REC);
+      this.menus.get(this.INGAME).get(this.INGAME_REC).updateMenuElements_IsInView();
    }
 
    public final void rebuildInGame_NonAggressionPact(int onCivID) {

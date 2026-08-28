@@ -88,6 +88,7 @@ public class AI_Assistant {
       private static int GARRISON_LINE_IMG = -1;
       private static int FORT_LINE_IMG = -1;
       private static int PRIORITY_COUNTRY_IMG = -1;
+      private static int RISK_UPRISING_IMG = -1;
       private static boolean ICONS_REGISTERED = false;
 
     private static void registerIcons() {
@@ -127,13 +128,19 @@ public class AI_Assistant {
          } catch (Exception varE) {
             com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS: icon register FALLBACK: " + varE.getMessage());
          }
-         try {
-            PRIORITY_COUNTRY_IMG = ImageManager.addImage("UI/priority_enemy.png");
-            com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS: icons registered prioritycountry=" + PRIORITY_COUNTRY_IMG);
-         } catch (Exception varE) {
-            com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS: icon register FALLBACK: " + varE.getMessage());
-         }
-      }
+          try {
+             PRIORITY_COUNTRY_IMG = ImageManager.addImage("UI/priority_enemy.png");
+             com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS: icons registered prioritycountry=" + PRIORITY_COUNTRY_IMG);
+          } catch (Exception varE) {
+             com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS: icon register FALLBACK: " + varE.getMessage());
+          }
+          try {
+             RISK_UPRISING_IMG = ImageManager.addImage("UI/risk_uprising.png");
+             com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS: icons registered riskuprising=" + RISK_UPRISING_IMG);
+          } catch (Exception varE) {
+             com.badlogic.gdx.Gdx.app.log("AoC", "MARKERS: icon register FALLBACK: " + varE.getMessage());
+          }
+       }
 
      public static int getPartisanImageID() {
         registerIcons();
@@ -159,7 +166,12 @@ public class AI_Assistant {
          registerIcons();
          return PRIORITY_COUNTRY_IMG;
       }
-     public static boolean PARTISAN_MAP_ON = false;
+      public static int getRiskUprisingImageID() {
+         registerIcons();
+         return RISK_UPRISING_IMG;
+      }
+      public static boolean PARTISAN_MAP_ON = false;
    public static boolean IS_ISSUING_ORDERS = false;
    public static boolean FRONTLINE_ON = true;
+   public static boolean RISK_UPRISING_ON = true;
 }

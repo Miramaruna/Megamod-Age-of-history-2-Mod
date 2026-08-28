@@ -811,10 +811,10 @@ public class AoCGame extends ApplicationAdapter implements InputProcessor {
       } else {
          try {
             CFG.setRender_3(true);
-            if (!CFG.menuManager.getKeyboard().getVisible()) {
-               if (CFG.editorManager.keyDown(keycode)) {
-                  return true;
-               }
+             if (!CFG.menuManager.getKeyboard().getVisible()) {
+                if (CFG.editorManager.keyDown(keycode)) {
+                   return true;
+                }
 
                if (keycode == 21) {
                   this.MAP_MOVE_LEFT = true;

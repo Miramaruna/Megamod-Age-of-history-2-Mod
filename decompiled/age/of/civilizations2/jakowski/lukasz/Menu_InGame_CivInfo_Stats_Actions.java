@@ -368,6 +368,106 @@ public class Menu_InGame_CivInfo_Stats_Actions extends SliderMenu {
          nPosY += tempElemH;
       }
 
+      menuElements.add(
+         new Button_Diplomacy_Action(
+            Images.diplo_army,
+            CFG.langManager.get("SendSpy"),
+            0,
+            0,
+            nPosY,
+            CFG.CIV_INFO_MENU_WIDTH - 2,
+            tempElemH,
+            CFG.game.getCivRelation_OfCivB(CFG.getActiveCivInfo(), CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()) < -10.0F
+         ) {
+            @Override
+            public void buildElementHover() {
+               ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
+               ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
+               if (!this.getClickable()) {
+                  nData.add(
+                     new MenuElement_Hover_v2_Element_Type_Text(
+                        CFG.langManager.get("OurRelationsNeedsToBeBelow") + ": ", CFG.COLOR_TEXT_MODIFIER_NEGATIVE2
+                     )
+                  );
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Text("-10", CFG.COLOR_TEXT_MODIFIER_NEGATIVE2));
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.diplo_relations, CFG.PADDING, 0));
+                  nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                  nData.clear();
+               } else {
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("SendSpy"), CFG.COLOR_BUTTON_GAME_TEXT_ACTIVE));
+                  nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                  nData.clear();
+               }
+
+               this.menuElementHover = new MenuElement_Hover_v2(nElements);
+            }
+
+            @Override
+            public void actionElement(int iID) {
+               CFG.ultimatum = new Ultimatum_GameData();
+               CFG.menuManager.rebuildInGame_SendSpy(CFG.getActiveCivInfo());
+            }
+         }
+      );
+      nPosY += tempElemH;
+
+      menuElements.add(
+         new Button_Diplomacy_Action(
+            Images.diplo_war_preparations,
+            CFG.langManager.get("StageACoup"),
+            0,
+            0,
+            nPosY,
+            CFG.CIV_INFO_MENU_WIDTH - 2,
+            tempElemH,
+            CFG.game.getCiv(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID()).getDiplomacyPoints() >= 16
+         ) {
+            @Override
+            public void buildElementHover() {
+               ArrayList<MenuElement_Hover_v2_Element2> nElements = new ArrayList<>();
+               ArrayList<MenuElement_Hover_v2_Element_Type> nData = new ArrayList<>();
+               if (!this.getClickable()) {
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("DiplomacyPoints") + ": ", CFG.COLOR_TEXT_MODIFIER_NEGATIVE2));
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Text("16", CFG.COLOR_TEXT_MODIFIER_NEGATIVE2));
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Image(Images.top_diplomacy_points, CFG.PADDING, 0));
+                  nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                  nData.clear();
+               } else {
+                  nData.add(new MenuElement_Hover_v2_Element_Type_Text(CFG.langManager.get("StageACoup"), CFG.COLOR_BUTTON_GAME_TEXT_ACTIVE));
+                  nElements.add(new MenuElement_Hover_v2_Element2(nData));
+                  nData.clear();
+               }
+
+               this.menuElementHover = new MenuElement_Hover_v2(nElements);
+            }
+
+            @Override
+            public void actionElement(int iID) {
+               CFG.menuManager.rebuildInGame_StageACoup(CFG.getActiveCivInfo());
+            }
+         }
+      );
+      nPosY += tempElemH;
+
+      menuElements.add(
+         new Button_Diplomacy_Action(
+            Images.diplo_trade,
+            CFG.langManager.get("Devaluation"),
+            0,
+            0,
+            nPosY,
+            CFG.CIV_INFO_MENU_WIDTH - 2,
+            tempElemH,
+            true
+         ) {
+            @Override
+            public void actionElement(int iID) {
+               CFG.menuManager.rebuildInGame_Devaluation(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID());
+            }
+         }
+      );
+      nPosY += tempElemH;
+
       if (CFG.game.getCivsAtWar(CFG.game.getPlayer(CFG.PLAYER_TURNID).getCivID(), CFG.getActiveCivInfo())) {
          menuElements.add(
             new Button_Diplomacy_Action(Images.diplo_rivals, CFG.langManager.get("CallToArms"), 0, 0, nPosY, CFG.CIV_INFO_MENU_WIDTH - 2, tempElemH, true) {

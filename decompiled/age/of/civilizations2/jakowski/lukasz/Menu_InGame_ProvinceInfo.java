@@ -3651,10 +3651,6 @@ public class Menu_InGame_ProvinceInfo extends SliderMenu {
 
             return;
          case 14:
-            CFG.viewsManager.setActiveViewID(ViewsManager.VIEW_BUILDINGS_MODE);
-            if (CFG.viewsManager.getActiveViewID() == ViewsManager.VIEW_BUILDINGS_MODE) {
-               CFG.toast.setInView(CFG.langManager.get("Buildings"), CFG.COLOR_TEXT_NUM_OF_PROVINCES);
-            }
 
             return;
          case 15:

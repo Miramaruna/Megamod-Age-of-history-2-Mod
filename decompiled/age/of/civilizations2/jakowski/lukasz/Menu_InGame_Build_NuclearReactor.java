@@ -491,10 +491,6 @@ public class Menu_InGame_Build_NuclearReactor extends SliderMenu {
       } else {
          CFG.game.setActiveProvinceID(this.iProvinceID);
          CFG.map.getMapCoordinates().centerToProvinceID(CFG.game.getActiveProvinceID());
-         CFG.viewsManager.setActiveViewID(ViewsManager.VIEW_BUILDINGS_MODE);
-         if (CFG.viewsManager.getActiveViewID() == ViewsManager.VIEW_BUILDINGS_MODE) {
-            CFG.toast.setInView(CFG.langManager.get("Buildings"), CFG.COLOR_TEXT_NUM_OF_PROVINCES);
-         }
       }
    }
 

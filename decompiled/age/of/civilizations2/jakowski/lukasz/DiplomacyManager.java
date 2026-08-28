@@ -1872,6 +1872,44 @@ public class DiplomacyManager {
       return true;
    }
 
+   public static final boolean sendSpy(int iToCivID, int iFromCivID, Ultimatum_GameData nUltimatum, int nUnits) {
+      Gdx.app.log("AoC", "SPY: try send " + CFG.game.getCiv(iFromCivID).getCivName() + " -> " + CFG.game.getCiv(iToCivID).getCivName());
+      if (CFG.game.getCivRelation_OfCivB(iToCivID, iFromCivID) > -10.0F) {
+         Gdx.app.log("AoC", "SPY: FAILED - relations too high");
+         return false;
+      }
+
+      if (CFG.game.getCiv(iToCivID).getPuppetOfCivID() == iToCivID || CFG.game.getCiv(iToCivID).getPuppetOfCivID() == iFromCivID) {
+         if (CFG.game.getCiv(iFromCivID).getDiplomacyPoints() < 24) {
+            Gdx.app.log("AoC", "SPY: FAILED - not enough diplomacy points");
+            return false;
+         }
+
+         Gdx.app.log("AoC", "SPY: delivered to " + CFG.game.getCiv(iToCivID).getCivName());
+         CFG.game.getCiv(iFromCivID).setDiplomacyPoints(CFG.game.getCiv(iFromCivID).getDiplomacyPoints() - 24);
+      }
+
+      if (!CFG.game.getCiv(iFromCivID).getControlledByPlayer()) {
+         CFG.game.getCiv(iFromCivID).addSentMessages(new Civilization_SentMessages(iToCivID, Message_Type.ULTIMATUM));
+      }
+
+      return true;
+   }
+
+   public static final void CoupSuccessful(int iCivID, int iFromCivID, int iValue) {
+      Gdx.app.log("AoC", "COUP: " + CFG.game.getCiv(iFromCivID).getCivName() + " staged a coup in " + CFG.game.getCiv(iCivID).getCivName());
+      int tPlayerID;
+      CFG.game.getCiv(iCivID).setPuppetOfCivID(iFromCivID);
+      if (CFG.game.getCiv(iFromCivID).getControlledByPlayer() && CFG.FOG_OF_WAR > 0 && (tPlayerID = CFG.game.getPlayerID_ByCivID(iFromCivID)) >= 0) {
+         for (int i = 0; i < CFG.game.getCiv(iCivID).getNumOfProvinces(); ++i) {
+            CFG.game.getProvince(CFG.game.getCiv(iCivID).getProvinceID(i)).updateFogOfWar(tPlayerID);
+         }
+      }
+
+      CFG.game.getCiv((int)iFromCivID).getCivilization_Diplomacy_GameData().messageBox.addMessage(new Message_CoupSuccessful(iCivID));
+      CFG.historyManager.addHistoryLog(new HistoryLog_IsVassal(iFromCivID, iCivID));
+   }
+
    public static final void acceptUltimatum(int iToCivID, int iFromCivID, Ultimatum_GameData ultimatum) {
       if (CFG.game.getCiv(iToCivID).getControlledByPlayer()) {
          CFG.toast.setInView(CFG.langManager.get("Ult_Accepted"), CFG.COLOR_TEXT_MODIFIER_POSITIVE);
