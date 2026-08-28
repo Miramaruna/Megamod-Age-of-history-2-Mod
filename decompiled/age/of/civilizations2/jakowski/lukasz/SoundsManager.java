@@ -343,6 +343,14 @@ public class SoundsManager {
       this.lSounds.get(id).play(this.soundsVolume * this.masterVolume * fPercOfVolume);
    }
 
+   public final void playOutcomeMusic(String pathToSound) {
+      try {
+         com.badlogic.gdx.audio.Sound var1 = Gdx.audio.newSound(Gdx.files.internal("sounds/" + pathToSound));
+         var1.play(this.soundsVolume * this.masterVolume);
+      } catch (Exception var2) {
+      }
+   }
+
    public final int playMoveArmy() {
       int tID = this.oR.nextInt(174) % 2;
       switch (tID) {

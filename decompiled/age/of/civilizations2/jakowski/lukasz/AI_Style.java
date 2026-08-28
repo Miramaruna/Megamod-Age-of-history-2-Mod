@@ -6844,10 +6844,24 @@ public class AI_Style {
                + (CFG.game.getCiv(nCivID).iIncomeTaxation + CFG.game.getCiv(nCivID).iIncomeProduction) * 0.4F
          )
          * 18.12746F;
+      float tMoneyF = (float)CFG.game.getCiv(nCivID).getMoney();
       boolean tPreInflationLightBuild = tIsPlayerWithAssistant
          && !tInflationActive
-         && (float)CFG.game.getCiv(nCivID).getMoney() >= tInflationThreshold * 0.3F;
-      int tMaxBuilds = tPreInflationLightBuild ? 3 : (tIsPlayerWithAssistant && tInflationActive ? 5 : 1);
+         && tMoneyF >= tInflationThreshold * 0.3F;
+      int tMaxBuilds;
+      if (tIsPlayerWithAssistant && !tInflationActive) {
+         if (tMoneyF >= tInflationThreshold * 0.9F) {
+            tMaxBuilds = 2;
+         } else if (tMoneyF >= tInflationThreshold * 0.1F) {
+            tMaxBuilds = 6;
+         } else {
+            tMaxBuilds = 4;
+         }
+      } else if (tIsPlayerWithAssistant && tInflationActive) {
+         tMaxBuilds = 1;
+      } else {
+         tMaxBuilds = 1;
+      }
 
       boolean tBypassMoneyGate = tIsPlayerWithAssistant && (tInflationActive || tPreInflationLightBuild);
 
@@ -6917,10 +6931,12 @@ public class AI_Style {
                      buildingsOptions.remove(i);
                   }
                }
-            } else if (tPreInflationLightBuild) {
+            } else if (tIsPlayerWithAssistant && tMoneyF >= tInflationThreshold * 0.9F) {
                for (int i = buildingsOptions.size() - 1; i >= 0; i--) {
                   if (buildingsOptions.get(i) instanceof AI_Build_Option_Fort
-                     || buildingsOptions.get(i) instanceof AI_Build_Option_Tower) {
+                     || buildingsOptions.get(i) instanceof AI_Build_Option_Tower
+                     || buildingsOptions.get(i) instanceof AI_Build_Option_Armoury
+                     || buildingsOptions.get(i) instanceof AI_Build_Option_Supplies) {
                      buildingsOptions.remove(i);
                   }
                }

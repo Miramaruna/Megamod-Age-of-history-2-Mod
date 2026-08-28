@@ -7,6 +7,34 @@ import java.util.List;
 public class Event_Outcome implements Serializable {
    public static final long serialVersionUID = 0L;
 
+   public LeaderOfCiv_GameData getLeader() {
+      return null;
+   }
+
+   public void setLeader(LeaderOfCiv_GameData nLeader) {
+   }
+
+   public String getSound() {
+      return null;
+   }
+
+   public void setPathToSound(String s) {
+   }
+
+   public int getProvId() {
+      return -1;
+   }
+
+   public void setProvId(int i) {
+   }
+
+   public String getNewName() {
+      return "";
+   }
+
+   public void setNewName(String s) {
+   }
+
    public int getCivID() {
       return -1;
    }
